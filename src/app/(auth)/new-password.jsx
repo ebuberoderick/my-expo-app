@@ -15,7 +15,6 @@ const ForgotPassword = () => {
 
     const router = useRouter()
     const URL = useLocalSearchParams()
-    const dispatch = useDispatch()
 
     const formHandler = UseFormHandler({
         required: {

@@ -18,7 +18,6 @@ const ChangeLocation = () => {
     const [stateList, setStateList] = useState([])
     const [citiesList, setCitiesList] = useState([])
 
-
     const getState = (e) => {
         fetchStates(e).then(async (res) => {
             const sav = []
@@ -39,7 +38,6 @@ const ChangeLocation = () => {
             setCitiesList([...sata])
         })
     }
-
 
 
     useEffect(() => {
