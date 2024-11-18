@@ -1,22 +1,23 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, BackHandler, Platform, ToastAndroid, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import AppInput from '../../components/organisms/AppInput'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 import Button from '../../components/organisms/Button'
-import { Link, useRouter } from 'expo-router'
+import { Link, useNavigation, useRouter } from 'expo-router'
 import UseFormHandler from '../../hooks/useFormHandler'
 import { Applogin } from '../../services/authService'
 import { SignInAuth } from '../../hooks/Auth'
 import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
 import Checkbox from 'expo-checkbox'
+import { dismissAll } from 'expo-router/build/global-state/routing'
 
 
 const Login = () => {
-
   const dispatch = useDispatch()
   const router = useRouter()
+  const navigation = useNavigation();
   const [isSelected, setSelection] = useState(false);
   const [formError, setFormError] = useState("")
 
@@ -42,6 +43,11 @@ const Login = () => {
     }
   })
 
+  useEffect(() => {
+    
+  }, []);
+
+
 
   return (
     <View className="flex-1 bg-white dark:bg-black pb-16 gap-3 justify-center">
@@ -64,7 +70,6 @@ const Login = () => {
               </View>
               <Link href="forget-password" className='dark:text-white'>Forget password?</Link>
             </View>
-
           </View>
         </View>
         <View className="gap-4 pb-16">

@@ -42,7 +42,6 @@ export default function Page() {
 function Content() {
   const dispatch = useDispatch()
   const router = useRouter()
-
   const out = async () => {
     await SignOut(dispatch)
     router.replace("/(auth)/login")

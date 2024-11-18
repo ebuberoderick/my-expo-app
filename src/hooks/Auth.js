@@ -8,12 +8,12 @@ export function SignInAuth(data, dispatch) {
 }
 
 
-export async function  SignOut(dispatch) {
+export async function SignOut(dispatch) {
   dispatch(addData({}))
   dispatch(updateAppState({
     location: "",
     getStarted: false
-}))
+  }))
   AsyncStorage.removeItem("APPTOKEN")
 }
 
@@ -23,7 +23,7 @@ export function Session(user) {
     status: '',
     user
   }
-  
+
   if (Object?.keys(user).length !== 0) {
     session.status = verifyJWT(user?.value?.bearer_token)
   } else {
