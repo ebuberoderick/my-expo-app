@@ -58,22 +58,22 @@ const settings = () => {
           <View className='gap-3'>
             <Text className='font-bold'>Account Settings</Text>
             <View className='p-3 gap-2 rounded-lg' style={{ backgroundColor: "#f3f4f6" }}>
-              <TouchableOpacity className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/add-preference")} className='flex-row gap-3 items-center py-2' >
                 <View><AntDesign name="pluscircleo" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Add Preference</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/personal-data")}  className='flex-row gap-3 items-center py-2' >
                 <View><FontAwesome5 name="user-circle" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Personal Data</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/change-password")}  className='flex-row gap-3 items-center py-2' >
                 <View><SimpleLineIcons name="lock-open" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Change Password</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/change-location")}  className='flex-row gap-3 items-center py-2' >
                 <View><MaterialIcons name="my-location" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Change Location</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>

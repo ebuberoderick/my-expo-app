@@ -4,11 +4,9 @@ import Button from '../../components/organisms/Button'
 import { useRouter } from 'expo-router'
 import UseFormHandler from '../../hooks/useFormHandler'
 import { useDispatch } from 'react-redux'
-import { updateAppState } from '../../Store/reducers/AppDefault'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import AppSelect from '../../components/organisms/AppSelect'
-import AppInput from '../../components/organisms/AppInput'
 import { fetchCountry, fetchStates, fetchCities, addLocation } from '../../services/authService'
 
 
@@ -73,7 +71,6 @@ const Location = () => {
         onSubmit: async (value) => {
             const { status, data } = await addLocation(value).catch(err => console.log(err))
             if (status) {
-                dispatch(updateAppState({ location: "/(auth)/prefrence" }))
                 router.replace("/(auth)/prefrence")
             }
         }
