@@ -22,29 +22,6 @@ function UseFormHandler(props) {
         return error
     }
 
-
-    const formInfo = async () => {
-        for (const key in props.initialValues) {
-            formData.delete(key)
-        }
-        for (const key in props.initialValues) {
-            switch (typeof value[key]) {
-                case 'array':
-                case 'object':
-                    formData.append(key, JSON.stringify(value[key]))
-                    break;
-                case 'string':
-                    formData.append(key, value[key])
-
-                    break;
-                default:
-                    break;
-            }
-        }
-        return
-    }
-
-
     const submit = async (e) => {
         if (props.preProccess) {
             props.preProccess()

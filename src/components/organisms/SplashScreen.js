@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import { UIActivityIndicator } from 'react-native-indicators';
+// import { UIActivityIndicator } from 'react-native-indicators';
 import React from 'react'
 
 const SplashScreen = () => {

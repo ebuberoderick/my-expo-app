@@ -9,6 +9,7 @@ import Fontisto from "react-native-vector-icons/Fontisto"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
+import FontAwesome6 from "react-native-vector-icons/FontAwesome6"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { useRouter } from 'expo-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -119,23 +120,23 @@ const settings = () => {
             <Text className='font-bold'>Customer Support</Text>
             <View className='p-3 gap-2 rounded-lg' style={{ backgroundColor: "#f3f4f6" }}>
               <TouchableOpacity className='flex-row gap-3 items-center py-2' >
-                <View><AntDesign name="pluscircleo" size={20} color="#94a3b8" /></View>
-                <View className='flex-grow'><Text className='font-medium'>Add Preference</Text></View>
+                <View><Feather name="phone" size={20} color="#94a3b8" /></View>
+                <View className='flex-grow'><Text className='font-medium'>08033333333</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
               <TouchableOpacity className='flex-row gap-3 items-center py-2' >
-                <View><FontAwesome5 name="user-circle" size={20} color="#94a3b8" /></View>
-                <View className='flex-grow'><Text className='font-medium'>Personal Data</Text></View>
+                <View><Ionicons name="mail-outline" size={20} color="#94a3b8" /></View>
+                <View className='flex-grow'><Text className='font-medium'>info@tots.com</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
               <TouchableOpacity className='flex-row gap-3 items-center py-2' >
-                <View><SimpleLineIcons name="lock-open" size={20} color="#94a3b8" /></View>
-                <View className='flex-grow'><Text className='font-medium'>Change Password</Text></View>
+                <View><AntDesign name="exclamationcircleo" size={20} color="#94a3b8" /></View>
+                <View className='flex-grow'><Text className='font-medium'>Report Issue</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
               <TouchableOpacity className='flex-row gap-3 items-center py-2' >
-                <View><MaterialIcons name="my-location" size={20} color="#94a3b8" /></View>
-                <View className='flex-grow'><Text className='font-medium'>Change Location</Text></View>
+                <View><FontAwesome6 name="comments" size={20} color="#94a3b8" /></View>
+                <View className='flex-grow'><Text className='font-medium'>Send Feedback</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
             </View>
