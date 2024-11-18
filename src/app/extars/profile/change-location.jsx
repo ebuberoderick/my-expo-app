@@ -9,6 +9,8 @@ import UseFormHandler from '~/hooks/useFormHandler'
 import DropdownComponent from '~/components/organisms/AppSelect'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import * as Burnt from "burnt";
+
 
 const ChangeLocation = () => {
     const router = useRouter()
@@ -70,11 +72,17 @@ const ChangeLocation = () => {
         onSubmit: async (value) => {
             const { status, data } = await addLocation(value).catch(err => console.log(err))
             if (status) {
+                Burnt.alert({
+                    title: "Location Updated.",
+                    preset: "done",
+                    from: "top",
+                    haptic: "success",
+                    message: "Your location was updated .",
+                });
                 router.back()
             }
         }
     })
-
 
     return (
         <AppLayout>
