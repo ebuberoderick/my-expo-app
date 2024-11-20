@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Switch, Platform } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import AppLayout from '~/components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from "react-native-vector-icons/AntDesign"
