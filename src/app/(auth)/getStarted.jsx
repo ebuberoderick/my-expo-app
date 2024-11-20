@@ -1,16 +1,9 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
-import AppInput from '../../components/organisms/AppInput'
-import Ionicons from "react-native-vector-icons/Ionicons"
-import EvilIcons from "react-native-vector-icons/EvilIcons"
+import React from 'react'
 import Button from '../../components/organisms/Button'
-import { Link, useRouter } from 'expo-router'
-import UseFormHandler from '../../hooks/useFormHandler'
-import { Applogin } from '../../services/authService'
-import { SignInAuth } from '../../hooks/Auth'
+import { useRouter } from 'expo-router'
 import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
-import Checkbox from 'expo-checkbox'
 import { updateAppState } from '../../Store/reducers/AppDefault'
 
 

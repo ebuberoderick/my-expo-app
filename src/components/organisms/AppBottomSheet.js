@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useMemo, forwardRef } from "react";
-import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetFlatList, BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import React, { useCallback, useMemo, forwardRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 
 
@@ -20,12 +19,6 @@ const AppBottomSheet = forwardRef((props, sheetRef) => {
         []
     );
 
-    const snapPoints = useMemo(() => ["40%", "75%"], []);
-
-    // callbacks
-    const handleSnapPress = useCallback(() => {
-        sheetRef.current?.present();
-    }, []);
     // render
     const renderItem = useCallback(({ item }) => {
         return (
@@ -47,23 +40,22 @@ const AppBottomSheet = forwardRef((props, sheetRef) => {
 
 
     return (
-        <BottomSheetModalProvider>
-            <BottomSheetModal
-                ref={sheetRef}
-                snapPoints={["40%", "75%"]}
-                enablePanDownToClose
-                backdropComponent={renderBackdrop}
-                enableDynamicSizing={false}
-            >
-                <BottomSheetFlatList
-                    data={data}
-                    keyExtractor={keyExtractor}
-                    renderItem={renderItem}
-                    scrollIndicatorInsets={false}
-                // estimatedItemSize={200}
-                />
-            </BottomSheetModal>
-        </BottomSheetModalProvider>
+        <BottomSheetModal
+            ref={sheetRef}
+            $modal
+            snapPoints={["40%", "75%"]}
+            enablePanDownToClose
+            backdropComponent={renderBackdrop}
+            enableDynamicSizing={false}
+        >
+            <BottomSheetFlatList
+                data={data}
+                keyExtractor={keyExtractor}
+                renderItem={renderItem}
+                scrollIndicatorInsets={false}
+            // estimatedItemSize={200}
+            />
+        </BottomSheetModal>
     );
 });
 

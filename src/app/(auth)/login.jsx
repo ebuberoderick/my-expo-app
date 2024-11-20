@@ -1,4 +1,4 @@
-import { View, Text, BackHandler, Platform, ToastAndroid, Alert } from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppInput from '../../components/organisms/AppInput'
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -11,13 +11,11 @@ import { SignInAuth } from '../../hooks/Auth'
 import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
 import Checkbox from 'expo-checkbox'
-import { dismissAll } from 'expo-router/build/global-state/routing'
 
 
 const Login = () => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const navigation = useNavigation();
   const [isSelected, setSelection] = useState(false);
   const [formError, setFormError] = useState("")
 

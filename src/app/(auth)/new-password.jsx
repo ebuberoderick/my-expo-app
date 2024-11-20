@@ -1,5 +1,5 @@
-import { View, Text, Image, Animated } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Animated } from 'react-native'
+import React from 'react'
 import AppInput from '../../components/organisms/AppInput'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
@@ -8,8 +8,6 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import UseFormHandler from '../../hooks/useFormHandler'
 import { TouchableOpacity } from 'react-native'
 import { AppNewPassword } from '../../services/authService'
-import { SignInAuth } from '../../hooks/Auth'
-import { useDispatch } from 'react-redux'
 
 const ForgotPassword = () => {
 

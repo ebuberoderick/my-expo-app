@@ -1,4 +1,4 @@
-import { View, Text, Animated, Image, Platform, StyleSheet } from 'react-native'
+import { View, Text, Image, Platform, StyleSheet } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Button from '../../components/organisms/Button'

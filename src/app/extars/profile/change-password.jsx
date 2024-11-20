@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import AppLayout from '~/components/layout/AppLayout'
 import Button from '~/components/organisms/Button'

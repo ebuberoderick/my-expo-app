@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Button from '../../components/organisms/Button'
 import { useRouter } from 'expo-router'
 import UseFormHandler from '../../hooks/useFormHandler'
-import { useDispatch } from 'react-redux'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import AppSelect from '../../components/organisms/AppSelect'
@@ -12,7 +11,6 @@ import { fetchCountry, fetchStates, fetchCities, addLocation } from '../../servi
 
 const Location = () => {
 
-    const dispatch = useDispatch()
     const router = useRouter()
     const [countryList, setCountryList] = useState([])
     const [stateList, setStateList] = useState([])
