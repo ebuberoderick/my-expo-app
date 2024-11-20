@@ -101,6 +101,11 @@ export default function Page() {
     setTimeout(() => {
       setLoading(false)
     }, 4000);
+    return (() => {
+      console.log("dgd");
+      
+      // sheetRef.current.dismiss()
+    })
   }, [])
 
 
