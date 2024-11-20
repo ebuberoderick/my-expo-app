@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from "react-native-vector-icons/AntDesign"
@@ -10,17 +10,107 @@ import { useRouter } from 'expo-router'
 import { useSelector } from 'react-redux'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import HomePreloader from '~/components/perloader/HomePreloader'
+import PostCard from '~/components/molecules/PostCard'
 
 const Profile = () => {
   const router = useRouter()
   const user = useSelector((state) => state.User?.value);
+
+  const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState([
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      reaction: 51,
+      comments: 48,
+      reacted: true,
+      image: ["", ""],
+      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+    },
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      reaction: 70,
+      comments: 18,
+      reacted: false,
+      image: ["", "", ""],
+      body: null
+    },
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      comments: 93,
+      reaction: 109,
+      reacted: true,
+      image: null,
+      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+    },
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      comments: 72,
+      reaction: 41,
+      reacted: false,
+      image: ["", ""],
+      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+    },
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      comments: 30,
+      reaction: 78,
+      reacted: true,
+      image: ["", "", ""],
+      body: null
+    },
+    {
+      user: {
+        fname: "Ebube",
+        lname: "Roderick",
+        avatar: "",
+        username: "bubeCode"
+      },
+      reacted: true,
+      comments: 48,
+      reaction: 23,
+      image: null,
+      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+    }
+  ])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 4000);
+  }, [])
+
   return (
     <AppLayout>
-      <ScrollView className=" " indicatorStyle="white">
+      <ScrollView className="pt-12" indicatorStyle="white">
         <View className="h-14 items-center px-4 gap-3 flex-row sticky top-0">
           <View className="flex-grow">
             <View className='flex-row items-center gap-3'>
-              <TouchableOpacity onPress={() => router.back()} style={{ height: 40, width: 40 }} className="items-center justify-center border border-gray-300 rounded-full">
+              <TouchableOpacity onPress={() => router.back()} style={{ height: 35, width: 35 }} className="items-center justify-center border border-gray-300 rounded-full">
                 <FontAwesome name="angle-left" size={30} style={{ position: 'relative', right: 1 }} />
               </TouchableOpacity>
               <Text className='font-medium'>Profile</Text>
@@ -82,7 +172,14 @@ const Profile = () => {
             </View>
             <View className='pb-32 gap-3'>
               <Text className='font-bold text-xl'>Posts</Text>
-              <HomePreloader />
+              {loading && <HomePreloader />}
+              <View style={{ gap: 24 }}>
+                {
+                  !loading && (
+                    posts.map((e, i) => (<PostCard key={i} data={e} />))
+                  )
+                }
+              </View>
             </View>
           </View>
         </View>

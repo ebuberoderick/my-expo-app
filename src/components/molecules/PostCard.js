@@ -1,41 +1,46 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import Animated from 'react-native-reanimated'
 import Carousel from "pinar";
 import { Image } from 'react-native';
+import Fontisto from "react-native-vector-icons/Fontisto"
+import AntDesign from "react-native-vector-icons/AntDesign"
+import Ionicons from "react-native-vector-icons/Ionicons"
+import AppBottomSheet from '../organisms/AppBottomSheet';
 
-const PostCard = ({ data }) => {
-
+const PostCard = ({ data, openBottomSheet }) => {
   const [post, setPost] = useState(data)
-  const [readShow, setReadShow] = useState()
-
-  const colorString = (length) => {
-    let result = '';
-    const characters = 'abcdef0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
-  }
+  const [readShow, setReadShow] = useState(true)
+  const [readvShow, setReadvShow] = useState(7)
+  const [rhow, setShow] = useState(0)
 
 
   const pics = [
-    "https://media.geeksforgeeks.org/wp-content/uploads/20200316135008/red7.png",
-    "https://media.geeksforgeeks.org/wp-content/uploads/20200316135014/yellow3.png",
-    "https://media.geeksforgeeks.org/img-practice/MaskGroup58@2x-min-1637846347.png",
-    "https://media.geeksforgeeks.org/img-practice/banner/dsa-self-paced-course-overview-image.png",
-    "https://media.geeksforgeeks.org/img-practice/banner/complete-interview-preparation-thumbnail.png",
-    "https://media.geeksforgeeks.org/img-practice/banner/Amazon-Test-Series-thumbnail.png",
-    "https://media.geeksforgeeks.org/img-practice/banner/dsa-self-paced-thumbnail.png"
+    "https://static.vecteezy.com/system/resources/previews/050/002/632/large_2x/portrait-of-a-beautiful-little-girl-in-a-santa-hat-on-a-red-background-free-photo.jpeg",
+    "https://static.vecteezy.com/system/resources/previews/050/823/125/non_2x/little-girl-in-snata-hat-exclaiming-happiness-getting-xmas-gifts-sitting-by-christmas-tree-with-parents-photo.jpg",
+    "https://www.shutterstock.com/image-photo/portrait-beautiful-woman-wearing-straw-260nw-2489701373.jpg",
+    "https://www.shutterstock.com/image-photo/smiling-young-mother-beautiful-daughter-260nw-2467175685.jpg",
+    "https://static.vecteezy.com/system/resources/previews/046/090/612/non_2x/the-elusive-noctilucent-clouds-a-testament-to-the-beauty-and-wonder-of-the-natural-world-photo.jpg",
+    "https://static.vecteezy.com/system/resources/previews/046/090/698/non_2x/an-elusive-wonder-reminding-us-of-the-endless-possibilities-found-in-natures-canvas-photo.jpg",
+    "https://www.shutterstock.com/image-photo/closeup-face-mature-woman-wearing-260nw-1383763730.jpg"
   ];
+
+
   function showImage() {
     var a = Math.floor(Math.random() * pics.length);
     var img = pics[a];
     return img
   }
+
+  const react = () => {
+    setPost(prv => ({ ...prv, reacted: !post?.reacted }))
+  }
+
+
+  useEffect(() => {
+    setShow(readvShow)
+  }, [readvShow])
+
 
 
   // startAutoplay
@@ -50,7 +55,7 @@ const PostCard = ({ data }) => {
             <Image source={{ uri: showImage() }} className='w-full h-full' />
           </Animated.View>
         </Animated.View>
-        <View className="gap-1">
+        <View className="">
           <Animated.View className="">
             <Text className='text-sm font-bold'>{post?.user?.fname} {post?.user?.lname}</Text>
           </Animated.View>
@@ -66,10 +71,10 @@ const PostCard = ({ data }) => {
         data?.image && (
           <View>
             <Animated.View className="h-72 w-full overflow-hidden rounded-3xl">
-              <Carousel showsControls={false} dotStyle={{ borderWidth: 1, borderColor: "#fff", width: 8, height: 8, gap: 4, borderRadius: 99, marginHorizontal: 3 }} activeDotStyle={{ backgroundColor: "#fff", width: 8, height: 8, borderRadius: 99, marginHorizontal: 3 }} >
+              <Carousel loop showsControls={false} dotStyle={{ borderWidth: 1, borderColor: "#fff", width: 8, height: 8, gap: 4, borderRadius: 99, marginHorizontal: 3 }} activeDotStyle={{ backgroundColor: "#fff", width: 8, height: 8, borderRadius: 99, marginHorizontal: 3 }} >
                 {
                   data?.image?.map((e, i) => (
-                    <View key={i} className='w-full flex-1' style={{ backgroundColor: "#" + colorString(6) }}>
+                    <View key={i} className='w-full flex-1'>
                       <Image source={{ uri: showImage() }} className='w-full h-full' />
                     </View>
                   ))
@@ -84,18 +89,29 @@ const PostCard = ({ data }) => {
           <View className="gap-1">
             <Animated.Text
               onTextLayout={({ nativeEvent: { lines } }) =>
-                setReadShow(lines.length > 3)
+                setReadvShow(lines.length)
               }
               className="text-sm" numberOfLines={readShow ? 3 : 0} ellipsizeMode='clip'>{post?.body}</Animated.Text>
-            {readShow && <Text onPress={() => setReadShow(false)} className="text-sm text-blue">... Read more</Text>}
+            {readShow ? <Text onPress={() => setReadShow(false)} className="text-sm text-blue">... Read more</Text> : <Text onPress={() => setReadShow(true)} className="text-sm text-blue">show less</Text>}
           </View>
         )
       }
 
-      <View className="flex-row gap-4">
-        <Animated.View className="w-12 h-6 bg-gray-500 dark:bg-gray-800"></Animated.View>
-        <Animated.View className="w-12 h-6 bg-gray-500 dark:bg-gray-800"></Animated.View>
-        <Animated.View className="w-12 h-6 bg-gray-500 dark:bg-gray-800"></Animated.View>
+      <View className="flex-row gap-4 items-center">
+        <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
+          <View><AntDesign name={post?.reacted ? "heart" : "hearto"} color={post?.reacted && "#2877F2"} size={22} /></View>
+          <Text className='text-xs'>{post?.reacted ? post?.reaction + 1 : post?.reaction}</Text>
+        </TouchableOpacity>
+        <Animated.View>
+          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => openBottomSheet()} >
+            <View><Fontisto name="comments" size={22} /></View>
+            <Text className='text-xs'>{post?.comments}</Text>
+          </TouchableOpacity>
+        </Animated.View>
+        <Animated.View className="flex-row items-center gap-1">
+          <View><Ionicons name="eye-outline" size={25} /></View>
+          <Text className='text-xs'>{post?.reaction - post?.comments}</Text>
+        </Animated.View>
       </View>
     </View>
   )

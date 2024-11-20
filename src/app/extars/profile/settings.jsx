@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, Switch, Pressable } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, Switch, Pressable, Platform } from 'react-native'
 import React, { useState } from 'react'
 import AppLayout from '~/components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
@@ -28,14 +28,14 @@ const settings = () => {
 
   return (
     <AppLayout>
-      <ScrollView>
+      <ScrollView className="pt-12" indicatorStyle="white">
         <View>
           <View className="flex-grow">
             <View style={{ padding: 5 }} className='flex-row items-center gap-2'>
               <TouchableOpacity onPress={() => router.back()} style={{ height: 35, width: 35 }} className="items-center justify-center border border-gray-300 rounded-full">
                 <FontAwesome name="angle-left" size={30} />
               </TouchableOpacity>
-              <View className='flex-row items-center'>
+              <View className='flex-row gap-1 items-center'>
                 <View style={{ width: 40, height: 40 }}>
                   <View className={`rounded-full overflow-hidden`}>
                     <Image source={{ uri: user?.user?.avatar }} className="w-full h-full rounded-full" />
@@ -64,17 +64,17 @@ const settings = () => {
                 <View className='flex-grow'><Text className='font-medium'>Add Preference</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.push("/extars/profile/personal-data")}  className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/personal-data")} className='flex-row gap-3 items-center py-2' >
                 <View><FontAwesome5 name="user-circle" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Personal Data</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.push("/extars/profile/change-password")}  className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/change-password")} className='flex-row gap-3 items-center py-2' >
                 <View><SimpleLineIcons name="lock-open" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Change Password</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.push("/extars/profile/change-location")}  className='flex-row gap-3 items-center py-2' >
+              <TouchableOpacity onPress={() => router.push("/extars/profile/change-location")} className='flex-row gap-3 items-center py-2' >
                 <View><MaterialIcons name="my-location" size={20} color="#94a3b8" /></View>
                 <View className='flex-grow'><Text className='font-medium'>Change Location</Text></View>
                 <View><FontAwesome name="angle-right" size={25} color="#94a3b8" /></View>
@@ -154,6 +154,7 @@ const settings = () => {
             </View>
           </View>
         </View>
+        {Platform.OS === "android" && <View className="h-12" />}
       </ScrollView>
     </AppLayout>
   )
