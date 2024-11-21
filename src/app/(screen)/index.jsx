@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Platform, ScrollView, TouchableOpacity } from "react-native";
+import { Platform, ScrollView, Text, TouchableOpacity } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { View } from "react-native";
@@ -127,7 +127,9 @@ export default function Page() {
           }
         </View>
       </ScrollView>
-      <AppBottomSheet ref={sheetRef} />
+      <AppBottomSheet snapPoints={["45%", "75%"]} ref={sheetRef}>
+        <Text>hi</Text>
+      </AppBottomSheet>
     </AppLayout>
   );
 }

@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign"
 
 
-const PrefernceChip = ({ onPress, text, compare, showClose,value }) => {
+const PrefernceChip = ({ onPress, text, compare, showClose, value, inversed }) => {
 
     const [pickedColor, setPickedColor] = useState("")
 
@@ -43,7 +43,7 @@ const PrefernceChip = ({ onPress, text, compare, showClose,value }) => {
 
     return (
         <View className="relative">
-            {isExist && <AntDesign name="checkcircle" className="absolute -top-1 -right-2" color="#2877F2" size={20} />}
+            {(isExist || inversed) && <AntDesign name="checkcircle" className="absolute -top-1 -right-2" color="#2877F2" size={20} />}
             {!isExist && showClose && <AntDesign name="closecircle" className="absolute -top-1 -right-2" color="#ef4444" size={20} />}
             <TouchableOpacity onPress={() => onPress(value)} className="py-2 px-6 border rounded-md" style={{ backgroundColor: pickedColor + "43", borderColor: pickedColor + "50" }}>
                 <Text style={{ color: pickedColor }}>{text}</Text>

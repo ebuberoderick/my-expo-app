@@ -14,6 +14,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useRouter } from 'expo-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { SignOut } from '~/hooks/Auth'
+import { updateAppState } from '~/Store/reducers/AppDefault'
 
 const settings = () => {
   const user = useSelector((state) => state.User?.value);
@@ -22,6 +23,7 @@ const settings = () => {
 
   const out = async () => {
     await SignOut(dispatch)
+    dispatch(updateAppState({ location: "" }))
     router.dismissAll();
     router.replace("/(auth)/login")
   }

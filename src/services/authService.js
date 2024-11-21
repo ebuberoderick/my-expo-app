@@ -10,10 +10,6 @@ export const addLocation = (formData) => apiWithAuth.post("app/onboarding/add_us
 export const AppUpdatePassword = (formData) => apiWithAuth.post("app/profile/update_password", formData).then(getApiResponse).catch(getErrorResponse);
 
 
-// 
-
-
-
 export const fetchCities = async (e, x) => {
     const data = await axios.post("https://countriesnow.space/api/v0.1/countries/state/cities", { "country": e, "state": x }).then(res => { return res })
     return data
@@ -31,12 +27,8 @@ export const fetchCountry = async () => {
     return data
 }
 
-// https://countriesnow.space/api/v0.1/countries/states
-
-
-
 
 export const fetchPrefrence = () => apiWithAuth.post("/app/onboarding/fetch_app_preference").then(getApiResponse).catch(getErrorResponse);
-export const updateUserPrefrence = (formData) => apiWithAuth.post("/app/onboarding/update_user_preference", formData).then(getApiResponse).catch(getErrorResponse);
+export const updateUserPrefrence = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
 
 
