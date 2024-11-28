@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Animated from 'react-native-reanimated'
 import Carousel from "pinar";
 import { Image } from 'react-native';
@@ -7,6 +7,7 @@ import Fontisto from "react-native-vector-icons/Fontisto"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import AppBottomSheet from '../organisms/AppBottomSheet';
+import { useFocusEffect } from 'expo-router';
 
 const PostCard = ({ data, openBottomSheet }) => {
   const [post, setPost] = useState(data)

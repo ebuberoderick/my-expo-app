@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import AppLayout from '~/components/layout/AppLayout'
 
 const Post = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text>post</Text>
-    </View>
+    <AppLayout>
+
+    </AppLayout>
   )
 }
 

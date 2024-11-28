@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, Platform } from 'react-native'
+import { View, Text, ScrollView, Image, Platform, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
@@ -12,11 +12,15 @@ import PrefernceChip from '~/components/organisms/PrefernceChip'
 import HomePreloader from '~/components/perloader/HomePreloader'
 import PostCard from '~/components/molecules/PostCard'
 import AppBottomSheet from '~/components/organisms/AppBottomSheet'
+import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomSheet'
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
+import Button from '~/components/organisms/Button'
 
 const Profile = () => {
   const router = useRouter()
   const user = useSelector((state) => state.User?.value);
   const sheetRef = useRef(null);
+  const desRef = useRef(null)
 
   const [loading, setLoading] = useState(true)
   const [posts, setPosts] = useState([
@@ -152,9 +156,9 @@ const Profile = () => {
                 <View className='flex-grow'>
                   <Text className='font-medium'>Description</Text>
                 </View>
-                <View className=''>
+                <TouchableOpacity onPress={() => desRef.current.present()} className=''>
                   <Text className=''><Feather name="edit-2" size={17} /></Text>
-                </View>
+                </TouchableOpacity>
               </View>
               <Text style={{ fontSize: 13 }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dolore nisi, necessitatibus deserunt maiores totam nam! Dignissimos tenetur ducimus eaque necessitatibus aliquid. Consequatur soluta assumenda sed facilis alias culpa provident.</Text>
             </View>
@@ -189,7 +193,16 @@ const Profile = () => {
           }
         </View>
       </ScrollView>
-      <AppBottomSheet ref={sheetRef} />
+      <PostCommentBottomSheet sheetRef={sheetRef} />
+      <AppBottomSheet ref={desRef}>
+        <View className='gap-2 p-3' style={{paddingBottom:22}}>
+          <Text>Content</Text>
+          <View className='border' style={{ borderRadius: 9, paddingHorizontal: 8, borderColor: "#cbd5e1" }}>
+            <BottomSheetTextInput onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />
+          </View>
+          <Button text="Done" />
+        </View>
+      </AppBottomSheet>
     </AppLayout>
   )
 }

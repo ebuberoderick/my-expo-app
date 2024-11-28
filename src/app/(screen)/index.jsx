@@ -7,6 +7,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import HomePreloader from "../../components/perloader/HomePreloader";
 import PostCard from "~/components/molecules/PostCard";
 import AppBottomSheet from "~/components/organisms/AppBottomSheet";
+import PostCommentBottomSheet from "~/components/molecules/PostCommentBottomSheet";
 
 
 export default function Page() {
@@ -127,9 +128,7 @@ export default function Page() {
           }
         </View>
       </ScrollView>
-      <AppBottomSheet snapPoints={["45%", "75%"]} ref={sheetRef}>
-        <Text>hi</Text>
-      </AppBottomSheet>
+      <PostCommentBottomSheet sheetRef={sheetRef} />
     </AppLayout>
   );
 }

@@ -40,7 +40,7 @@ function UseFormHandler(props) {
         setValues(prevValue => ({ ...prevValue, [name]: props.initialValues }))
     }
 
-    return { value, setValues, handlerChange, submit, reset, error, proccessing, formData, setError }
+    return { value, setValues, handlerChange, submit, reset, error, proccessing, formData, setError, setProccessing }
 }
 
 export default UseFormHandler

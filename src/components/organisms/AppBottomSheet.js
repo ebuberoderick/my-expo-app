@@ -1,6 +1,6 @@
 import React, { useCallback, forwardRef } from "react";
 import { TouchableOpacity } from "react-native";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 
 const AppBottomSheet = forwardRef(({ children, snapPoints }, sheetRef) => {
@@ -31,7 +31,9 @@ const AppBottomSheet = forwardRef(({ children, snapPoints }, sheetRef) => {
                 enablePanDownToClose
                 backdropComponent={renderBackdrop}
             >
-                {children}
+                <BottomSheetView>
+                    {children}
+                </BottomSheetView>
             </BottomSheetModal>
         );
     }
