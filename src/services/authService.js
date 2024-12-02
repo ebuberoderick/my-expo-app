@@ -32,3 +32,5 @@ export const fetchPrefrence = () => apiWithAuth.post("/app/onboarding/fetch_app_
 export const updateUserPrefrence = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
 
 
+
+export const fetchPost = (formData) => apiWithAuth.post("app/post/fetch", formData).then(getApiResponse).catch(getErrorResponse);

@@ -8,99 +8,27 @@ import HomePreloader from "../../components/perloader/HomePreloader";
 import PostCard from "~/components/molecules/PostCard";
 import AppBottomSheet from "~/components/organisms/AppBottomSheet";
 import PostCommentBottomSheet from "~/components/molecules/PostCommentBottomSheet";
+import { fetchPost } from "~/services/authService";
 
 
 export default function Page() {
   const [loading, setLoading] = useState(true)
   const sheetRef = useRef(null);
-  const [posts, setPosts] = useState([
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reaction: 51,
-      comments: 48,
-      reacted: true,
-      image: ["", ""],
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reaction: 70,
-      comments: 18,
-      reacted: false,
-      image: ["", "", ""],
-      body: null
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 93,
-      reaction: 109,
-      reacted: true,
-      image: null,
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 72,
-      reaction: 41,
-      reacted: false,
-      image: ["", ""],
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 30,
-      reaction: 78,
-      reacted: true,
-      image: ["", "", ""],
-      body: null
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reacted: true,
-      comments: 48,
-      reaction: 23,
-      image: null,
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+  const [comments, setComments] = useState([])
+  const [posts, setPosts] = useState([])
+
+  const fetchPosts = async () => {
+    const { status, data } = await fetchPost()
+    if (status) {
+      setPosts(data.data[0].data)
     }
-  ])
+    setLoading(false)
+  }
+
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 4000);
+    fetchPosts()
   }, [])
-
-
 
 
   return (
@@ -119,7 +47,7 @@ export default function Page() {
           <View style={{ gap: 24 }}>
             {
               !loading && (
-                posts.map((e, i) => (<PostCard openBottomSheet={() => sheetRef.current?.present()} key={i} data={e} />))
+                posts.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))
               )
             }
           </View>
@@ -128,7 +56,7 @@ export default function Page() {
           }
         </View>
       </ScrollView>
-      <PostCommentBottomSheet sheetRef={sheetRef} />
+      <PostCommentBottomSheet data={comments} sheetRef={sheetRef} />
     </AppLayout>
   );
 }

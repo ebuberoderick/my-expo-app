@@ -6,40 +6,35 @@ import { Image } from 'react-native';
 import Fontisto from "react-native-vector-icons/Fontisto"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import AppBottomSheet from '../organisms/AppBottomSheet';
-import { useFocusEffect } from 'expo-router';
+import { useSelector } from 'react-redux';
+
 
 const PostCard = ({ data, openBottomSheet }) => {
+
+
+  const check = (arr, name) => {
+    const found = arr.some(el => el.user_id === name);
+    if (found) setReacted(true)
+  }
+
+
+  const myId = useSelector(state => state.User?.value)
+
   const [post, setPost] = useState(data)
   const [readShow, setReadShow] = useState(true)
+  const [reacted, setReacted] = useState(false)
   const [readvShow, setReadvShow] = useState(7)
   const [rhow, setShow] = useState(0)
-
-
-  const pics = [
-    "https://static.vecteezy.com/system/resources/previews/050/002/632/large_2x/portrait-of-a-beautiful-little-girl-in-a-santa-hat-on-a-red-background-free-photo.jpeg",
-    "https://static.vecteezy.com/system/resources/previews/050/823/125/non_2x/little-girl-in-snata-hat-exclaiming-happiness-getting-xmas-gifts-sitting-by-christmas-tree-with-parents-photo.jpg",
-    "https://www.shutterstock.com/image-photo/portrait-beautiful-woman-wearing-straw-260nw-2489701373.jpg",
-    "https://www.shutterstock.com/image-photo/smiling-young-mother-beautiful-daughter-260nw-2467175685.jpg",
-    "https://static.vecteezy.com/system/resources/previews/046/090/612/non_2x/the-elusive-noctilucent-clouds-a-testament-to-the-beauty-and-wonder-of-the-natural-world-photo.jpg",
-    "https://static.vecteezy.com/system/resources/previews/046/090/698/non_2x/an-elusive-wonder-reminding-us-of-the-endless-possibilities-found-in-natures-canvas-photo.jpg",
-    "https://www.shutterstock.com/image-photo/closeup-face-mature-woman-wearing-260nw-1383763730.jpg"
-  ];
-
-
-  function showImage() {
-    var a = Math.floor(Math.random() * pics.length);
-    var img = pics[a];
-    return img
-  }
 
   const react = () => {
     setPost(prv => ({ ...prv, reacted: !post?.reacted }))
   }
 
 
+
   useEffect(() => {
     setShow(readvShow)
+    check(post.likes, myId.user.id)
   }, [readvShow])
 
 
@@ -53,7 +48,7 @@ const PostCard = ({ data, openBottomSheet }) => {
       <View className="flex-row gap-2 items-center">
         <Animated.View>
           <Animated.View className="w-11 h-11 overflow-hidden rounded-full">
-            <Image source={{ uri: showImage() }} className='w-full h-full' />
+            <Image source={{ uri: post?.user?.avatar }} className='w-full h-full' />
           </Animated.View>
         </Animated.View>
         <View className="">
@@ -76,7 +71,7 @@ const PostCard = ({ data, openBottomSheet }) => {
                 {
                   data?.image?.map((e, i) => (
                     <View key={i} className='w-full flex-1'>
-                      <Image source={{ uri: showImage() }} className='w-full h-full' />
+                      <Image source={{ uri: e }} className='w-full h-full' />
                     </View>
                   ))
                 }
@@ -86,13 +81,13 @@ const PostCard = ({ data, openBottomSheet }) => {
         )
       }
       {
-        data?.body && (
+        data?.text && (
           <View className="gap-1">
             <Animated.Text
               onTextLayout={({ nativeEvent: { lines } }) =>
                 setReadvShow(lines.length)
               }
-              className="text-sm" numberOfLines={readShow ? 3 : 0} ellipsizeMode='clip'>{post?.body}</Animated.Text>
+              className="text-sm" numberOfLines={readShow ? 3 : 0} ellipsizeMode='clip'>{post?.text}</Animated.Text>
             {readShow ? <Text onPress={() => setReadShow(false)} className="text-sm text-blue">... Read more</Text> : <Text onPress={() => setReadShow(true)} className="text-sm text-blue">show less</Text>}
           </View>
         )
@@ -100,18 +95,18 @@ const PostCard = ({ data, openBottomSheet }) => {
 
       <View className="flex-row gap-4 items-center">
         <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
-          <View><AntDesign name={post?.reacted ? "heart" : "hearto"} color={post?.reacted && "#2877F2"} size={22} /></View>
-          <Text className='text-xs'>{post?.reacted ? post?.reaction + 1 : post?.reaction}</Text>
+          <View><AntDesign name={reacted ? "heart" : "hearto"} color={reacted && "#2877F2"} size={22} /></View>
+          <Text className='text-xs'>{reacted ? post?.likes.length + 1 : post?.likes.length}</Text>
         </TouchableOpacity>
         <Animated.View>
-          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => openBottomSheet()} >
+          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => openBottomSheet(post?.comments)} >
             <View><Fontisto name="comments" size={22} /></View>
-            <Text className='text-xs'>{post?.comments}</Text>
+            <Text className='text-xs'>{post?.comments.length}</Text>
           </TouchableOpacity>
         </Animated.View>
         <Animated.View className="flex-row items-center gap-1">
           <View><Ionicons name="eye-outline" size={25} /></View>
-          <Text className='text-xs'>{post?.reaction - post?.comments}</Text>
+          <Text className='text-xs'>{post?.views}</Text>
         </Animated.View>
       </View>
     </View>
