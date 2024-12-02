@@ -1,15 +1,46 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, TouchableHighlight } from 'react-native'
+import React, { useRef, useState } from 'react'
 import AppBottomSheet from '../organisms/AppBottomSheet'
 import Octicons from "react-native-vector-icons/Octicons"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { TextInput } from 'react-native'
 
 const PostCommentBottomSheet = ({ sheetRef, data }) => {
+
+    const [movedown, updateMovedown] = useState(false)
     console.log(data);
 
+    const input = useRef(null)
+
+    const onFocus = (input) => {
+        updateMovedown(true);
+        input.current.focus();
+    };
+
+    // const onBlur = (input) => {
+    //     updateMovedown(false);
+    // };
+
+
     return (
-        <AppBottomSheet snapPoints={["45%", "75%"]} ref={sheetRef}>
+        <AppBottomSheet withFooter movedown={movedown} FooterContent={() => (
+            <View className='p-3 w-full absolute bottom-0 flex-row gap-3 '>
+                <View className='border border-gray-300 flex-row flex-grow rounded-3xl'>
+                    <View className='p-2'>
+                        <View className='w-10 h-10 items-center justify-center bg-blue rounded-full'></View>
+                    </View>
+                    <View className='flex-grow'>
+                        <TextInput onPress={() => onFocus(input)} ref={input} numberOfLines={10} multiline style={{ paddingVertical: 10, paddingHorizontal: 0 }} placeholder='Write your comment' />
+                    </View>
+                </View>
+                <View>
+                    <View className='w-14 h-14 items-center justify-center bg-blue rounded-full'>
+                        <Octicons name="paper-airplane" size={18} color={"#fff"} />
+                    </View>
+                </View>
+            </View>
+        )} snapPoints={["45%", "75%"]} ref={sheetRef}>
             <View className='relative'>
                 <View className=''>
                     <BottomSheetScrollView className="px-4 w-screen">
@@ -37,22 +68,6 @@ const PostCommentBottomSheet = ({ sheetRef, data }) => {
                     </BottomSheetScrollView>
                 </View>
             </View>
-            <View className='w-20 h-20 bg-danger' style={{position:'absolute'}}></View>
-            {/* <View className='p-3 w-full flex-row gap-3 '>
-                <View className='border border-gray-300 flex-row flex-grow rounded-3xl'>
-                    <View className='p-2'>
-                        <View className='w-10 h-10 items-center justify-center bg-blue rounded-full'></View>
-                    </View>
-                    <View className='flex-grow'>
-                        <BottomSheetTextInput numberOfLines={10} multiline style={{ paddingVertical: 10, paddingHorizontal: 0 }} placeholder='Write your comment' />
-                    </View>
-                </View>
-                <View>
-                    <View className='w-14 h-14 items-center justify-center bg-blue rounded-full'>
-                        <Octicons name="paper-airplane" size={18} color={"#fff"} />
-                    </View>
-                </View>
-            </View> */}
         </AppBottomSheet>
     )
 }
