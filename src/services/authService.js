@@ -39,8 +39,7 @@ export const postComment = (formData) => apiWithAuth.post("app/post/comment", fo
 export const fetchPostComment = (formData) => apiWithAuth.post("app/post/fetch_post_comments", formData).then(getApiResponse).catch(getErrorResponse);
 export const postLike = (formData) => apiWithAuth.post("app/post/like", formData).then(getApiResponse).catch(getErrorResponse);
 
-
-
 export const postCommentReply = (formData) => apiWithAuth.post("app/post/comment_reply", formData).then(getApiResponse).catch(getErrorResponse);
+export const postCommentLike = (formData) => apiWithAuth.post("app/post/comment_like", formData).then(getApiResponse).catch(getErrorResponse);
 
 // 

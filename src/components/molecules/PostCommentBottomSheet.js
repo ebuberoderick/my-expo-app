@@ -8,7 +8,8 @@ import { TextInput } from 'react-native'
 import { useSelector } from 'react-redux'
 import { BlurView } from 'expo-blur'
 import UseFormHandler from '~/hooks/useFormHandler'
-import { fetchPostComment, postComment } from '~/services/authService'
+import { fetchPostComment, postComment, postCommentLike } from '~/services/authService'
+import { moment } from '~/hooks/useMoment'
 
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
@@ -23,12 +24,18 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         if (status) {
             setCommentList(data.data[0].data);
         }
-        console.log(data.data[0].data);
+        console.log("hisdfv");
     }
 
+
     const checkReacted = async (list) => {
-        const val = true
-        return val
+        console.log(list);
+        if (list.length > 0) {
+            return <Fontisto name="heart" size={14} color={"#2877F2"} />
+        } else {
+            return <Fontisto name="heart-alt" size={14} />
+        }
+
     }
 
     const onFocus = (input) => {
@@ -55,6 +62,20 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
         }
     })
+
+
+    const react = async (i) => {
+        await postCommentLike({ post_id, comment_id: i })
+        fetchComments(postForm.value.post_id)
+
+
+        // setReacted(!reacted)
+        // if (reacted) {
+        //     setreactedVal("+")
+        // } else {
+        //     setreactedVal("-")
+        // }
+    }
 
     useEffect(() => {
         postForm.value.post_id = post_id
@@ -97,15 +118,13 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                             </View>
                                             <View>
                                                 <Text className='font-bold'>{comment?.user?.fname} {comment?.user?.lname}</Text>
-                                                <Text className='text-gray-500 text-xs'>@{comment?.user?.username} 10mins</Text>
+                                                <Text className='text-gray-500 text-xs'>@{comment?.user?.username} {moment(comment?.created_at)} ago</Text>
                                             </View>
                                         </View>
                                         <Text className='text-sm'>{comment?.text}</Text>
                                         <View className='flex-row'>
-                                            <TouchableOpacity className='flex-row gap-1 items-center'>
-                                                <View>
-                                                    {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
-                                                </View>
+                                            <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
+                                                <View>{checkReacted(comment.likes)}</View>
                                                 <View><Text className='text-xs'>{comment.likes.length}</Text></View>
                                             </TouchableOpacity>
                                         </View>

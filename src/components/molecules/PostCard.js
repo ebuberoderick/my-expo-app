@@ -6,13 +6,12 @@ import { Image } from 'react-native';
 import Fontisto from "react-native-vector-icons/Fontisto"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { useSelector } from 'react-redux';
 import { postLike } from '~/services/authService';
+import { moment } from '~/hooks/useMoment';
 
 
 const PostCard = ({ data, openBottomSheet }) => {
-
-  const myId = useSelector(state => state.User?.value)
+  // const locale = DeviceInfo.getDeviceLocale()
 
   const [post, setPost] = useState(data)
   const [reactedVal, setreactedVal] = useState("")
@@ -30,7 +29,6 @@ const PostCard = ({ data, openBottomSheet }) => {
       setreactedVal("-")
     }
   }
-
 
 
   useEffect(() => {
@@ -55,7 +53,7 @@ const PostCard = ({ data, openBottomSheet }) => {
             <Animated.View className="">
               <Text className='text-xs'>@{post?.user?.username}</Text>
             </Animated.View>
-            <Animated.View className=""><Text className='text-xs'>10mins ago</Text></Animated.View>
+            <Animated.View className=""><Text className='text-xs'>{moment(post?.created_at)} ago</Text></Animated.View>
           </View>
         </View>
       </View>
