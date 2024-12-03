@@ -13,9 +13,12 @@ import PrefernceChip from '~/components/organisms/PrefernceChip'
 import * as ImagePicker from 'expo-image-picker';
 import Animated from 'react-native-reanimated'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { API_BASE_URL, getToken } from '~/services/httpService'
 
 const Post = () => {
   const router = useRouter()
+  const headers = { 'Authorization': getToken() }
   const [selectedImg, setSelectedImg] = useState([])
   const [list, setList] = useState([])
   const [isVisible, setModalVisiblity] = useState(false)
@@ -56,14 +59,15 @@ const Post = () => {
     formDatar.append("text", postText)
     formDatar.append("preferences", preferences)
     console.log(selectedImg);
-    
+
     if (selectedImg.length > 0) {
-        for (let index = 0; index < selectedImg.length; index++) {
-          formDatar.append(`image[]`, {
-            uri: selectedImg[index].uri,
-            type: selectedImg[index].mimeType,
-            name: selectedImg[index].fileName
-         })
+      for (let index = 0; index < selectedImg.length; index++) {
+        formDatar.append(`image`, {
+          uri: selectedImg[index].uri,
+          type: selectedImg[index].type,
+          fileName: selectedImg[index].fileName,
+          name: selectedImg[index].fileName
+        })
       }
     }
     // x = {
@@ -73,8 +77,14 @@ const Post = () => {
     // }
     console.log(formDatar);
 
-    const { status, data } = await makePost(formDatar).catch(e => console.log(e))
-    console.log(data);
+    await axios.post(`${API_BASE_URL}/app/post/create`, formDatar, { headers }).then(async (res) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    })
+
+    // const { status, data } = await makePost(formDatar).catch(e => console.log(e))
+    // console.log(data);
 
   }
 

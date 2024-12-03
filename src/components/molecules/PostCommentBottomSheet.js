@@ -21,9 +21,10 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     const input = useRef(null)
 
     const fetchComments = async () => {
-        const {data,status} = await fetchPostComment(post_id)
-        console.log(data);
+        const { data, status } = await fetchPostComment({post_id})
+        setCommentList(data.data[0].data);
     }
+
 
     const onFocus = (input) => {
         updateMovedown(true);
@@ -34,6 +35,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     //     updateMovedown(false);
     // };
 
+    
 
     const postForm = UseFormHandler({
         required: {
@@ -45,8 +47,13 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
             comment_id: 0
         },
         onSubmit: async (value) => {
+            input.current.blur();
+            input.current.clear()
             const { status, data } = await postComment(value).catch(() => postForm.setProccessing(false))
-            console.log("hi");
+
+            if (status) {
+                fetchComments()
+            }
 
         }
     })

@@ -20,11 +20,8 @@ export default function Page() {
   const fetchPosts = async () => {
     const { status, data } = await fetchPost()
     if (status) {
-      console.log(data.data[0].data);
-      
       setPosts(data.data[0].data)
     }
-
     setLoading(false)
   }
 
