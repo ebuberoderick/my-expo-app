@@ -20,8 +20,11 @@ export default function Page() {
   const fetchPosts = async () => {
     const { status, data } = await fetchPost()
     if (status) {
+      console.log(data.data[0].data);
+      
       setPosts(data.data[0].data)
     }
+
     setLoading(false)
   }
 
@@ -56,7 +59,7 @@ export default function Page() {
           }
         </View>
       </ScrollView>
-      <PostCommentBottomSheet data={comments} sheetRef={sheetRef} />
+      <PostCommentBottomSheet post_id={comments} data={comments} sheetRef={sheetRef} />
     </AppLayout>
   );
 }

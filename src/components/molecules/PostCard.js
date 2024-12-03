@@ -9,14 +9,7 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import { useSelector } from 'react-redux';
 
 
-const PostCard = ({ data, openBottomSheet }) => {
-
-
-  const check = (arr, name) => {
-    const found = arr.some(el => el.user_id === name);
-    if (found) setReacted(true)
-  }
-
+const PostCard = ({ data, openBottomSheet, }) => {
 
   const myId = useSelector(state => state.User?.value)
 
@@ -27,14 +20,14 @@ const PostCard = ({ data, openBottomSheet }) => {
   const [rhow, setShow] = useState(0)
 
   const react = () => {
-    setPost(prv => ({ ...prv, reacted: !post?.reacted }))
+    setReacted(!reacted)
   }
 
 
 
   useEffect(() => {
     setShow(readvShow)
-    check(post.likes, myId.user.id)
+    setReacted(data.liked === "1")
   }, [readvShow])
 
 
@@ -96,12 +89,12 @@ const PostCard = ({ data, openBottomSheet }) => {
       <View className="flex-row gap-4 items-center">
         <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
           <View><AntDesign name={reacted ? "heart" : "hearto"} color={reacted && "#2877F2"} size={22} /></View>
-          <Text className='text-xs'>{reacted ? post?.likes.length + 1 : post?.likes.length}</Text>
+          <Text className='text-xs'>{reacted ? post?.likes_count + 1 : post?.likes_count}</Text>
         </TouchableOpacity>
         <Animated.View>
-          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => openBottomSheet(post?.comments)} >
+          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => { openBottomSheet(post?.id) }} >
             <View><Fontisto name="comments" size={22} /></View>
-            <Text className='text-xs'>{post?.comments.length}</Text>
+            <Text className='text-xs'>{post?.comments_count}</Text>
           </TouchableOpacity>
         </Animated.View>
         <Animated.View className="flex-row items-center gap-1">

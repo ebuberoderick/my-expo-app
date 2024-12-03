@@ -15,6 +15,7 @@ import AppBottomSheet from '~/components/organisms/AppBottomSheet'
 import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomSheet'
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import Button from '~/components/organisms/Button'
+import { fetchPost } from '~/services/authService'
 
 const Profile = () => {
   const router = useRouter()
@@ -23,92 +24,24 @@ const Profile = () => {
   const desRef = useRef(null)
 
   const [loading, setLoading] = useState(true)
-  const [posts, setPosts] = useState([
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reaction: 51,
-      comments: 48,
-      reacted: true,
-      image: ["", ""],
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reaction: 70,
-      comments: 18,
-      reacted: false,
-      image: ["", "", ""],
-      body: null
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 93,
-      reaction: 109,
-      reacted: true,
-      image: null,
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 72,
-      reaction: 41,
-      reacted: false,
-      image: ["", ""],
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      comments: 30,
-      reaction: 78,
-      reacted: true,
-      image: ["", "", ""],
-      body: null
-    },
-    {
-      user: {
-        fname: "Ebube",
-        lname: "Roderick",
-        avatar: "",
-        username: "bubeCode"
-      },
-      reacted: true,
-      comments: 48,
-      reaction: 23,
-      image: null,
-      body: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium voluptas tenetur ratione magnam nihil impedit laboriosam itaque voluptatum illo unde aut numquam fuga, et atque aliquid quam dolores optio ipsam.",
+  const [comments, setComments] = useState([])
+  const [posts, setPosts] = useState([])
+
+  const fetchPosts = async () => {
+    const { status, data } = await fetchPost()
+    if (status) {
+      setPosts(data.data[0].data)
     }
-  ])
+    console.log("hi");
+
+    setLoading(false)
+  }
+
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 4000);
+    fetchPosts()
   }, [])
+
 
   return (
     <AppLayout>
@@ -182,7 +115,7 @@ const Profile = () => {
               <View style={{ gap: 24 }}>
                 {
                   !loading && (
-                    posts.map((e, i) => (<PostCard openBottomSheet={() => sheetRef.current?.present()} key={i} data={e} />))
+                    posts.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))
                   )
                 }
               </View>
@@ -193,9 +126,9 @@ const Profile = () => {
           }
         </View>
       </ScrollView>
-      <PostCommentBottomSheet sheetRef={sheetRef} />
+      <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} />
       <AppBottomSheet ref={desRef}>
-        <View className='gap-2 p-3' style={{paddingBottom:22}}>
+        <View className='gap-2 p-3' style={{ paddingBottom: 22 }}>
           <Text>Content</Text>
           <View className='border' style={{ borderRadius: 9, paddingHorizontal: 8, borderColor: "#cbd5e1" }}>
             <BottomSheetTextInput onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />

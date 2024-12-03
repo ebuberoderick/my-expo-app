@@ -1,13 +1,18 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput, Image, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppLayout from '~/components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import Ionicons from "react-native-vector-icons/Ionicons"
+import Fontisto from "react-native-vector-icons/Fontisto"
+import AntDesign from "react-native-vector-icons/AntDesign"
 import Button from '~/components/organisms/Button'
 import { useRouter } from 'expo-router'
-import { fetchPrefrence } from '~/services/authService'
+import Carousel from "pinar";
+import { fetchPrefrence, makePost } from '~/services/authService'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import * as ImagePicker from 'expo-image-picker';
+import Animated from 'react-native-reanimated'
+import { useSelector } from 'react-redux'
 
 const Post = () => {
   const router = useRouter()
@@ -17,8 +22,11 @@ const Post = () => {
   const [preview, setPreview] = useState(false)
   const [prefernceList, setPrefernceList] = useState([])
   const [postText, setPostText] = useState("")
+  const [readShow, setReadShow] = useState(true)
+  const [readvShow, setReadvShow] = useState(7)
   const [contentErr, setContentErr] = useState("")
   const [prefErr, setPrefErr] = useState("")
+  const user = useSelector((state) => state.User?.value);
 
 
   const gotoPreview = () => {
@@ -37,6 +45,19 @@ const Post = () => {
 
 
   const postNow = async () => {
+    const preference = []
+    list.forEach(element => {
+      preference.push(element.value.toString())
+    });
+    x = {
+      text: postText,
+      image: selectedImg,
+      preference
+    }
+    console.log(x);
+
+    const { status, data } = await makePost(x).catch(e => console.log(e))
+    console.log(data);
 
   }
 
@@ -73,12 +94,12 @@ const Post = () => {
   return (
     <AppLayout>
       <Modal animationType="fade" transparent={true} visible={isVisible}>
-        <View className='flex-1 bg-white'>
+        <View className={`flex-1 bg-white`} style={{ paddingTop: Platform.OS === 'ios' && 47 }}>
           <View className='p-3'>
             <View className='border relative' style={{ paddingRight: 50, borderRadius: 25, borderColor: "#94a3b8" }}>
-              <TextInput numberOfLines={1} className='w-full' style={{ paddingLeft: 22 }} placeholderTextColor="#94a3b8" placeholder='Search Prefrence' />
+              <TextInput numberOfLines={1} className='w-full' style={{ paddingLeft: 22, paddingVertical: Platform.OS === 'ios' ? 14 : 12 }} placeholderTextColor="#94a3b8" placeholder='Search Prefrence' />
               <View className='absolute p-3 h-full' style={{ right: 5 }}>
-                <Ionicons name="search" size={25} />
+                <Ionicons name="search" size={25} color={"#000"} />
               </View>
             </View>
           </View>
@@ -107,7 +128,7 @@ const Post = () => {
       </Modal>
 
       <Modal animationType="fade" transparent={true} visible={preview}>
-        <View className='flex-1 bg-white'>
+        <View className={`flex-1 bg-white  `} style={{paddingTop:Platform.OS === 'ios' && 45}}>
           <View className="h-14 items-center px-3 gap-3 flex-row sticky top-0">
             <View className="flex-grow">
               <View className='flex-row items-center relative gap-3'>
@@ -119,7 +140,72 @@ const Post = () => {
             </View>
           </View>
           <ScrollView className='flex-grow'>
+            <View className="gap-4 p-3">
+              <View className="flex-row gap-2 items-center">
+                <Animated.View>
+                  <Animated.View className="w-11 h-11 overflow-hidden rounded-full">
+                    <Image source={{ uri: user?.user?.avatar }} className='w-full h-full' />
+                  </Animated.View>
+                </Animated.View>
+                <View className="">
+                  <Animated.View className="">
+                    <Text className='text-sm font-bold'>{user?.user?.fname} {user?.user?.lname}</Text>
+                  </Animated.View>
+                  <View className="flex-row gap-2">
+                    <Animated.View className="">
+                      <Text className='text-xs'>@{user?.user?.username}</Text>
+                    </Animated.View>
+                    <Animated.View className=""><Text className='text-xs'>10mins ago</Text></Animated.View>
+                  </View>
+                </View>
+              </View>
+              {
+                selectedImg.length > 0 && (
+                  <View>
+                    <Animated.View className="h-72 w-full overflow-hidden rounded-3xl">
+                      <Carousel loop showsControls={false} dotStyle={{ borderWidth: 1, borderColor: "#fff", width: 8, height: 8, gap: 4, borderRadius: 99, marginHorizontal: 3 }} activeDotStyle={{ backgroundColor: "#fff", width: 8, height: 8, borderRadius: 99, marginHorizontal: 3 }} >
+                        {
+                          selectedImg?.map((e, i) => (
+                            <View key={i} className='w-full flex-1'>
+                              <Image source={{ uri: e.uri }} className='w-full h-full' />
+                            </View>
+                          ))
+                        }
+                      </Carousel>
+                    </Animated.View>
+                  </View>
+                )
+              }
+              {
+                postText && (
+                  <View className="gap-1">
+                    <Animated.Text
+                      onTextLayout={({ nativeEvent: { lines } }) =>
+                        setReadvShow(lines.length)
+                      }
+                      className="text-sm" numberOfLines={readShow ? 3 : 0} ellipsizeMode='clip'>{postText}</Animated.Text>
+                    {/* {readShow ? <Text onPress={() => setReadShow(false)} className="text-sm text-blue">... Read more</Text> : <Text onPress={() => setReadShow(true)} className="text-sm text-blue">show less</Text>} */}
+                  </View>
+                )
+              }
 
+              <View className="flex-row gap-4 items-center">
+                <TouchableOpacity className="flex-row items-center gap-1">
+                  <View><AntDesign size={22} /></View>
+                  <Text className='text-xs'>0</Text>
+                </TouchableOpacity>
+                <Animated.View>
+                  <TouchableOpacity className="flex-row items-center gap-1">
+                    <View><Fontisto name="comments" size={22} /></View>
+                    <Text className='text-xs'>0</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View className="flex-row items-center gap-1">
+                  <View><Ionicons name="eye-outline" size={25} /></View>
+                  <Text className='text-xs'>0</Text>
+                </Animated.View>
+              </View>
+            </View>
           </ScrollView>
           <View className='px-3 pt-3' style={{ paddingBottom: 30 }}>
             <Button text="Post" onPress={postNow} />
@@ -164,7 +250,7 @@ const Post = () => {
                 selectedImg.map((img, i) => (
                   <TouchableOpacity key={i} onPress={() => setSelectedImg(prev => prev.filter(item => item.uri !== img.uri))} className='justify-center relative overflow-hidden items-center' style={{ height: 65, width: "14.6%", borderRadius: 14 }}>
                     <Image source={{ uri: img.uri }} className='w-full h-full relative z-0' />
-                    <View className='absolute w-3 h-3 bg-danger rounded-full border z-1' style={{ borderColor: "#fff", padding: 2, top: 3, right: 3 }}><Ionicons name="close" color={"#fff"} size={13} /></View>
+                    <View className='absolute bg-danger rounded-full border z-1' style={{ borderColor: "#fff", padding: 2, top: 3, right: 3 }}><Ionicons name="close" color={"#fff"} size={18} /></View>
                   </TouchableOpacity>
                 ))
               }
