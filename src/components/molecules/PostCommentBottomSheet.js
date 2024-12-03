@@ -29,13 +29,10 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
 
     const checkReacted = async (list) => {
-        console.log(list);
-        if (list.length > 0) {
-            return <Fontisto name="heart" size={14} color={"#2877F2"} />
-        } else {
-            return <Fontisto name="heart-alt" size={14} />
-        }
-
+        console.log(list.length);
+        
+        const val = true
+        return val
     }
 
     const onFocus = (input) => {
@@ -67,8 +64,8 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     const react = async (i) => {
         await postCommentLike({ post_id, comment_id: i })
         fetchComments(postForm.value.post_id)
-
-
+        
+        
         // setReacted(!reacted)
         // if (reacted) {
         //     setreactedVal("+")
@@ -124,7 +121,9 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                         <Text className='text-sm'>{comment?.text}</Text>
                                         <View className='flex-row'>
                                             <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
-                                                <View>{checkReacted(comment.likes)}</View>
+                                                <View>
+                                                    {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
+                                                </View>
                                                 <View><Text className='text-xs'>{comment.likes.length}</Text></View>
                                             </TouchableOpacity>
                                         </View>
