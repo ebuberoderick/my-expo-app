@@ -33,12 +33,6 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         input.current.focus();
     };
 
-    // const onBlur = (input) => {
-    //     updateMovedown(false);
-    // };
-
-
-
     const postForm = UseFormHandler({
         required: {
             text: 'Please Enter Your First Name',
@@ -88,7 +82,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
             <View className='relative'>
                 <View className=''>
                     <BottomSheetScrollView className="px-4 w-screen">
-                        <View className='gap-2'>
+                        <View className='gap-2 pb-24'>
                             {
                                 commentList?.map((comment, i) => (
                                     <View key={i} className='gap-2'>
