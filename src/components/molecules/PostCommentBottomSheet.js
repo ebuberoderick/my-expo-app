@@ -20,9 +20,11 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
     const input = useRef(null)
 
-    const fetchComments = async () => {
-        const { data, status } = await fetchPostComment({post_id})
-        setCommentList(data.data[0].data);
+    const fetchComments = async (id) => {
+        const { data, status } = await fetchPostComment({ post_id: id })
+        if (status) {
+            setCommentList(data.data[0].data);
+        }
     }
 
 
@@ -35,7 +37,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     //     updateMovedown(false);
     // };
 
-    
+
 
     const postForm = UseFormHandler({
         required: {
@@ -50,20 +52,16 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
             input.current.blur();
             input.current.clear()
             const { status, data } = await postComment(value).catch(() => postForm.setProccessing(false))
-
             if (status) {
-                fetchComments()
+                fetchComments(postForm.value.post_id)
             }
 
         }
     })
 
     useEffect(() => {
-        // if (data?.comments) {
-        //     setCommentList(data?.comments)
-        // }
         postForm.value.post_id = post_id
-        fetchComments()
+        fetchComments(post_id)
     }, [post_id])
 
 

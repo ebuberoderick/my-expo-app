@@ -31,11 +31,6 @@ const PostCard = ({ data, openBottomSheet, }) => {
   }, [readvShow])
 
 
-
-  // startAutoplay
-  // stopAutoplay
-
-
   return (
     <View className="gap-4">
       <View className="flex-row gap-2 items-center">
