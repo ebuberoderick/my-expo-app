@@ -45,18 +45,35 @@ const Post = () => {
 
 
   const postNow = async () => {
-    const preference = []
+    const preferences = []
     list.forEach(element => {
-      preference.push(element.value.toString())
+      preferences.push(element.value.toString())
     });
-    x = {
-      text: postText,
-      image: selectedImg,
-      preference
-    }
-    console.log(x);
 
-    const { status, data } = await makePost(x).catch(e => console.log(e))
+    const formDatar = new FormData()
+
+
+    formDatar.append("text", postText)
+    formDatar.append("preferences", preferences)
+    console.log(selectedImg);
+    
+    if (selectedImg.length > 0) {
+        for (let index = 0; index < selectedImg.length; index++) {
+          formDatar.append(`image[]`, {
+            uri: selectedImg[index].uri,
+            type: selectedImg[index].mimeType,
+            name: selectedImg[index].fileName
+         })
+      }
+    }
+    // x = {
+    //   text: postText,
+    //   image: selectedImg,
+    //   preferences
+    // }
+    console.log(formDatar);
+
+    const { status, data } = await makePost(formDatar).catch(e => console.log(e))
     console.log(data);
 
   }
@@ -128,7 +145,7 @@ const Post = () => {
       </Modal>
 
       <Modal animationType="fade" transparent={true} visible={preview}>
-        <View className={`flex-1 bg-white  `} style={{paddingTop:Platform.OS === 'ios' && 45}}>
+        <View className={`flex-1 bg-white  `} style={{ paddingTop: Platform.OS === 'ios' && 45 }}>
           <View className="h-14 items-center px-3 gap-3 flex-row sticky top-0">
             <View className="flex-grow">
               <View className='flex-row items-center relative gap-3'>
