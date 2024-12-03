@@ -13,8 +13,6 @@ import { fetchPostComment, postComment } from '~/services/authService'
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
     const user = useSelector((state) => state.User?.value);
-    console.log(post_id);
-
     const [movedown, updateMovedown] = useState(false)
     const [commentList, setCommentList] = useState([])
 
@@ -25,8 +23,13 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         if (status) {
             setCommentList(data.data[0].data);
         }
+        console.log(data.data[0].data);
     }
 
+    const checkReacted = async (list) => {
+        const val = true
+        return val
+    }
 
     const onFocus = (input) => {
         updateMovedown(true);
@@ -89,20 +92,19 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                         <View className='flex-row items-center gap-2'>
                                             <View>
                                                 <View className='w-12 h-12 bg-blue rounded-full'>
-                                                    {/* <Image alt={comment.} /> */}
+                                                    <Image source={{ uri: comment?.user?.avatar }} className="w-full h-full rounded-full" />
                                                 </View>
                                             </View>
                                             <View>
-                                                <Text className='font-bold'>Ebube Roderick</Text>
-                                                <Text className='text-gray-500 text-xs'>@bube 10mins</Text>
+                                                <Text className='font-bold'>{comment?.user?.fname} {comment?.user?.lname}</Text>
+                                                <Text className='text-gray-500 text-xs'>@{comment?.user?.username} 10mins</Text>
                                             </View>
                                         </View>
                                         <Text className='text-sm'>{comment?.text}</Text>
                                         <View className='flex-row'>
                                             <TouchableOpacity className='flex-row gap-1 items-center'>
                                                 <View>
-                                                    <Fontisto name="heart-alt" size={14} />
-                                                    {/* <Fontisto name="heart" size={14} color={"#2877F2"} /> */}
+                                                    {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
                                                 </View>
                                                 <View><Text className='text-xs'>{comment.likes.length}</Text></View>
                                             </TouchableOpacity>

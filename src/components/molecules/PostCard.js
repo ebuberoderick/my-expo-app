@@ -7,20 +7,28 @@ import Fontisto from "react-native-vector-icons/Fontisto"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useSelector } from 'react-redux';
+import { postLike } from '~/services/authService';
 
 
-const PostCard = ({ data, openBottomSheet, }) => {
+const PostCard = ({ data, openBottomSheet }) => {
 
   const myId = useSelector(state => state.User?.value)
 
   const [post, setPost] = useState(data)
+  const [reactedVal, setreactedVal] = useState("")
   const [readShow, setReadShow] = useState(true)
   const [reacted, setReacted] = useState(false)
   const [readvShow, setReadvShow] = useState(7)
   const [rhow, setShow] = useState(0)
 
   const react = () => {
+    postLike({ post_id: post?.id })
     setReacted(!reacted)
+    if (reacted) {
+      setreactedVal("+")
+    } else {
+      setreactedVal("-")
+    }
   }
 
 
@@ -84,7 +92,7 @@ const PostCard = ({ data, openBottomSheet, }) => {
       <View className="flex-row gap-4 items-center">
         <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
           <View><AntDesign name={reacted ? "heart" : "hearto"} color={reacted && "#2877F2"} size={22} /></View>
-          <Text className='text-xs'>{reacted ? post?.likes_count + 1 : post?.likes_count}</Text>
+          <Text className='text-xs'>{reactedVal === "" ? parseInt(post?.likes_count) : (reactedVal === "-" ? parseInt(post?.likes_count) : parseInt(post?.likes_count) - 1)}</Text>
         </TouchableOpacity>
         <Animated.View>
           <TouchableOpacity className="flex-row items-center gap-1" onPress={() => { openBottomSheet(post?.id) }} >
