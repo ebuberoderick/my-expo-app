@@ -15,7 +15,7 @@ import AppBottomSheet from '~/components/organisms/AppBottomSheet'
 import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomSheet'
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import Button from '~/components/organisms/Button'
-import { fetchPost } from '~/services/authService'
+import { fetchUserProfile } from '~/services/authService'
 
 const Profile = () => {
   const router = useRouter()
@@ -28,12 +28,10 @@ const Profile = () => {
   const [posts, setPosts] = useState([])
 
   const fetchPosts = async () => {
-    const { status, data } = await fetchPost()
+    const { status, data } = await fetchUserProfile({ id: user.user.id.toString() })
     if (status) {
-      setPosts(data.data[0].data)
+      setPosts(data.data[1])
     }
-    console.log("hi");
-
     setLoading(false)
   }
 
@@ -63,7 +61,7 @@ const Profile = () => {
           <View className='relative rounded-lg bg-gray-200' style={{ top: 80, backgroundColor: "#80808020" }}>
             <View className='absolute w-full' style={{ top: -70 }}>
               <View style={{ width: 120, height: 120 }} className='relative mx-auto'>
-                <View className={`rounded-full overflow-hidden`}>
+                <View className={`rounded-full bg-gray-200 overflow-hidden`}>
                   <Image source={{ uri: user?.user?.avatar }} className="w-full h-full rounded-full" />
                 </View>
                 <View className='bg-white absolute bottom-0 right-0 justify-center items-center rounded-full' style={{ width: 40, height: 40 }}>
@@ -112,13 +110,24 @@ const Profile = () => {
             <View className='pb-32 gap-3'>
               <Text className='font-bold text-xl'>Posts</Text>
               {loading && <HomePreloader />}
-              <View style={{ gap: 24 }}>
-                {
-                  !loading && (
-                    posts.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))
-                  )
-                }
-              </View>
+
+
+              {
+                !loading && posts?.data.length < 1 && (
+                  <View style={{ paddingVertical: 30, gap: 40 }}>
+                    <Text className='text-center text-gray-400 text-lg' >You have not made any post yet</Text>
+                    <Button text={"make your first post"} onPress={() => router.push("/extars/post")} />
+                  </View>
+                )
+              }
+
+              {
+                !loading && posts?.data.length > 0 && (
+                  <View style={{ gap: 24 }}>
+                    {posts?.data?.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))}
+                  </View>
+                )
+              }
             </View>
           </View>
           {

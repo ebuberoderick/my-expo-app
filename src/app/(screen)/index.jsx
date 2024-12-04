@@ -6,9 +6,10 @@ import { View } from "react-native";
 import AppLayout from "../../components/layout/AppLayout";
 import HomePreloader from "../../components/perloader/HomePreloader";
 import PostCard from "~/components/molecules/PostCard";
-import AppBottomSheet from "~/components/organisms/AppBottomSheet";
+import inappLogo from "src/assets/images/inappLogo.png"
 import PostCommentBottomSheet from "~/components/molecules/PostCommentBottomSheet";
 import { fetchPost } from "~/services/authService";
+import { Image } from "react-native";
 
 
 export default function Page() {
@@ -35,7 +36,9 @@ export default function Page() {
     <AppLayout>
       <ScrollView className="pt-12" indicatorStyle="white">
         <View className="h-14 items-center px-3 gap-3 flex-row sticky top-0">
-          <View className="flex-grow"></View>
+          <View className="flex-grow">
+            <Image source={require("../../assets/images/inappLogo.png")} className="w-24 h-16" />
+          </View>
           <View><AntDesign name="search1" size={25} /></View>
           <TouchableOpacity className="relative">
             <Ionicons name="notifications-outline" size={25} />
