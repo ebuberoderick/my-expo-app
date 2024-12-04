@@ -10,11 +10,14 @@ import { BlurView } from 'expo-blur'
 import UseFormHandler from '~/hooks/useFormHandler'
 import { fetchPostComment, postComment, postCommentLike } from '~/services/authService'
 import { moment } from '~/hooks/useMoment'
+import CommentPreloader from '../perloader/CommentPreloader'
 
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
     const user = useSelector((state) => state.User?.value);
     const [movedown, updateMovedown] = useState(false)
+    const [loading, updateloading] = useState(true)
+
     const [commentList, setCommentList] = useState([])
 
     const input = useRef(null)
@@ -24,13 +27,14 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         if (status) {
             setCommentList(data.data[0].data);
         }
-        console.log("hisdfv");
+        updateloading(false)
+        // console.log("hisdfv");
     }
 
 
     const checkReacted = async (list) => {
         console.log(list.length);
-        
+
         const val = true
         return val
     }
@@ -64,8 +68,8 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     const react = async (i) => {
         await postCommentLike({ post_id, comment_id: i })
         fetchComments(postForm.value.post_id)
-        
-        
+
+
         // setReacted(!reacted)
         // if (reacted) {
         //     setreactedVal("+")
@@ -75,6 +79,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     }
 
     useEffect(() => {
+        updateloading(true)
         postForm.value.post_id = post_id
         fetchComments(post_id)
     }, [post_id])
@@ -103,34 +108,49 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
             <View className='relative'>
                 <View className=''>
                     <BottomSheetScrollView className="px-4 w-screen">
-                        <View className='gap-2 pb-24'>
-                            {
-                                commentList?.map((comment, i) => (
-                                    <View key={i} className='gap-2'>
-                                        <View className='flex-row items-center gap-2'>
-                                            <View>
-                                                <View className='w-12 h-12 bg-blue rounded-full'>
-                                                    <Image source={{ uri: comment?.user?.avatar }} className="w-full h-full rounded-full" />
+                        {loading && <CommentPreloader />}
+                        {!loading && commentList.length < 1 && (
+                            <View className='gap-3' style={{paddingTop:100}}>
+                                <View className='justify-center w-full items-center'><Fontisto name="comments" size={90} color={"#e3e3e3"} /></View>
+                                <View>
+                                    <Text className='text-center text-gray-400'>No comment yet</Text>
+                                    <Text className='text-center text-gray-400'>Be the first to commnet</Text>
+                                </View>
+                            </View>
+                        )}
+                        {
+                            !loading && commentList.length > 0 && (
+                                <View className='gap-2 pb-24'>
+                                    {
+                                        commentList?.map((comment, i) => (
+                                            <View key={i} className='gap-2'>
+                                                <View className='flex-row items-center gap-2'>
+                                                    <View>
+                                                        <View className='w-12 h-12 bg-blue rounded-full'>
+                                                            <Image source={{ uri: comment?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                        </View>
+                                                    </View>
+                                                    <View>
+                                                        <Text className='font-bold'>{comment?.user?.fname} {comment?.user?.lname}</Text>
+                                                        <Text className='text-gray-500 text-xs'>@{comment?.user?.username} {moment(comment?.created_at)} ago</Text>
+                                                    </View>
+                                                </View>
+                                                <Text className='text-sm'>{comment?.text}</Text>
+                                                <View className='flex-row'>
+                                                    <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
+                                                        <View>
+                                                            {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
+                                                        </View>
+                                                        <View><Text className='text-xs'>{comment.likes.length}</Text></View>
+                                                    </TouchableOpacity>
                                                 </View>
                                             </View>
-                                            <View>
-                                                <Text className='font-bold'>{comment?.user?.fname} {comment?.user?.lname}</Text>
-                                                <Text className='text-gray-500 text-xs'>@{comment?.user?.username} {moment(comment?.created_at)} ago</Text>
-                                            </View>
-                                        </View>
-                                        <Text className='text-sm'>{comment?.text}</Text>
-                                        <View className='flex-row'>
-                                            <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
-                                                <View>
-                                                    {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
-                                                </View>
-                                                <View><Text className='text-xs'>{comment.likes.length}</Text></View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                ))
-                            }
-                        </View>
+                                        ))
+                                    }
+                                </View>
+                            )
+                        }
+
                     </BottomSheetScrollView>
                 </View>
             </View>

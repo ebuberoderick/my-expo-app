@@ -90,7 +90,7 @@ const PostCard = ({ data, openBottomSheet }) => {
       <View className="flex-row gap-4 items-center">
         <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
           <View><AntDesign name={reacted ? "heart" : "hearto"} color={reacted && "#2877F2"} size={22} /></View>
-          <Text className='text-xs'>{reactedVal === "" ? parseInt(post?.likes_count) : (reactedVal === "-" ? parseInt(post?.likes_count) : parseInt(post?.likes_count) - 1)}</Text>
+          <Text className='text-xs'>{reactedVal === "" ? parseInt(post?.likes_count) : (reactedVal === "-" ? parseInt(post?.likes_count) + 1 : parseInt(post?.likes_count) - (data.liked === "1" ? 1 : 0))}</Text>
         </TouchableOpacity>
         <Animated.View>
           <TouchableOpacity className="flex-row items-center gap-1" onPress={() => { openBottomSheet(post?.id) }} >
