@@ -33,4 +33,13 @@ export const updateUserPrefrence = (formData) => apiWithAuth.post("app/profile/u
 
 
 
-export const fetchPost = (formData) => apiWithAuth.post("app/post/fetch", formData).then(getApiResponse).catch(getErrorResponse);
+export const fetchPost = () => apiWithAuth.post("app/post/fetch").then(getApiResponse).catch(getErrorResponse);
+export const makePost = (formData) => apiWithAuth.post("app/post/create", formData).then(getApiResponse).catch(getErrorResponse);
+export const postComment = (formData) => apiWithAuth.post("app/post/comment", formData).then(getApiResponse).catch(getErrorResponse);
+export const fetchPostComment = (formData) => apiWithAuth.post("app/post/fetch_post_comments", formData).then(getApiResponse).catch(getErrorResponse);
+export const postLike = (formData) => apiWithAuth.post("app/post/like", formData).then(getApiResponse).catch(getErrorResponse);
+
+export const postCommentReply = (formData) => apiWithAuth.post("app/post/comment_reply", formData).then(getApiResponse).catch(getErrorResponse);
+export const postCommentLike = (formData) => apiWithAuth.post("app/post/comment_like", formData).then(getApiResponse).catch(getErrorResponse);
+
+// 

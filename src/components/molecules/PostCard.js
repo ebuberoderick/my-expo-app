@@ -6,41 +6,35 @@ import { Image } from 'react-native';
 import Fontisto from "react-native-vector-icons/Fontisto"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { useSelector } from 'react-redux';
+import { postLike } from '~/services/authService';
+import { moment } from '~/hooks/useMoment';
 
 
 const PostCard = ({ data, openBottomSheet }) => {
-
-
-  const check = (arr, name) => {
-    const found = arr.some(el => el.user_id === name);
-    if (found) setReacted(true)
-  }
-
-
-  const myId = useSelector(state => state.User?.value)
+  // const locale = DeviceInfo.getDeviceLocale()
 
   const [post, setPost] = useState(data)
+  const [reactedVal, setreactedVal] = useState("")
   const [readShow, setReadShow] = useState(true)
   const [reacted, setReacted] = useState(false)
   const [readvShow, setReadvShow] = useState(7)
   const [rhow, setShow] = useState(0)
 
   const react = () => {
-    setPost(prv => ({ ...prv, reacted: !post?.reacted }))
+    postLike({ post_id: post?.id })
+    setReacted(!reacted)
+    if (reacted) {
+      setreactedVal("+")
+    } else {
+      setreactedVal("-")
+    }
   }
-
 
 
   useEffect(() => {
     setShow(readvShow)
-    check(post.likes, myId.user.id)
+    setReacted(data.liked === "1")
   }, [readvShow])
-
-
-
-  // startAutoplay
-  // stopAutoplay
 
 
   return (
@@ -59,7 +53,7 @@ const PostCard = ({ data, openBottomSheet }) => {
             <Animated.View className="">
               <Text className='text-xs'>@{post?.user?.username}</Text>
             </Animated.View>
-            <Animated.View className=""><Text className='text-xs'>10mins ago</Text></Animated.View>
+            <Animated.View className=""><Text className='text-xs'>{moment(post?.created_at)} ago</Text></Animated.View>
           </View>
         </View>
       </View>
@@ -96,12 +90,12 @@ const PostCard = ({ data, openBottomSheet }) => {
       <View className="flex-row gap-4 items-center">
         <TouchableOpacity onPress={() => react()} className="flex-row items-center gap-1">
           <View><AntDesign name={reacted ? "heart" : "hearto"} color={reacted && "#2877F2"} size={22} /></View>
-          <Text className='text-xs'>{reacted ? post?.likes.length + 1 : post?.likes.length}</Text>
+          <Text className='text-xs'>{reactedVal === "" ? parseInt(post?.likes_count) : (reactedVal === "-" ? parseInt(post?.likes_count) + 1 : parseInt(post?.likes_count) - (data.liked === "1" ? 1 : 0))}</Text>
         </TouchableOpacity>
         <Animated.View>
-          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => openBottomSheet(post?.comments)} >
+          <TouchableOpacity className="flex-row items-center gap-1" onPress={() => { openBottomSheet(post?.id) }} >
             <View><Fontisto name="comments" size={22} /></View>
-            <Text className='text-xs'>{post?.comments.length}</Text>
+            <Text className='text-xs'>{post?.comments_count}</Text>
           </TouchableOpacity>
         </Animated.View>
         <Animated.View className="flex-row items-center gap-1">

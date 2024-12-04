@@ -56,7 +56,7 @@ export default function Page() {
           }
         </View>
       </ScrollView>
-      <PostCommentBottomSheet data={comments} sheetRef={sheetRef} />
+      <PostCommentBottomSheet post_id={comments} data={comments} sheetRef={sheetRef} />
     </AppLayout>
   );
 }

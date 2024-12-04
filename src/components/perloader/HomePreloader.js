@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import Animated from 'react-native-reanimated'
 
@@ -57,7 +57,8 @@ const HomePreloader = () => {
                     <Animated.View className="w-12 h-6 animate-pulse duration-500 bg-gray-200 dark:bg-gray-800"></Animated.View>
                     <Animated.View className="w-12 h-6 animate-pulse duration-500 bg-gray-200 dark:bg-gray-800"></Animated.View>
                 </View>
-            </View><View className="gap-4">
+            </View>
+            <View className="gap-4">
                 <View className="flex-row gap-2 items-center">
                     <Animated.View>
                         <Animated.View className="w-11 h-11 animate-pulse duration-500 bg-gray-200 dark:bg-gray-800 rounded-full"></Animated.View>
