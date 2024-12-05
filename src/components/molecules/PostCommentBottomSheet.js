@@ -5,6 +5,7 @@ import Octicons from "react-native-vector-icons/Octicons"
 import Fontisto from "react-native-vector-icons/Fontisto"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native'
 import { useSelector } from 'react-redux'
@@ -22,6 +23,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     const comRly = useRef(null)
     const xt = useRef(null)
     const [replies, setReplies] = useState({})
+    const [showLenght, setshowLenght] = useState(0)
     const [commentList, setCommentList] = useState([])
 
     const input = useRef(null)
@@ -173,6 +175,9 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                                             <Feather name="refresh-cw" size={18} />
                                                         </View>
                                                         <View><Text className='text-xs'>{comment.replies.length}</Text></View>
+                                                        {
+                                                            console.log(comment.replies)
+                                                        }
                                                     </TouchableOpacity>
                                                     <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
                                                         <View>
@@ -180,6 +185,41 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                                         </View>
                                                         <View><Text className='text-xs'>{comment.likes.length}</Text></View>
                                                     </TouchableOpacity>
+                                                    {
+                                                        comment.replies.length > 0 && (
+                                                            <TouchableOpacity onPress={() => { showLenght > 0 ? setshowLenght(0) : setshowLenght(6) }} className='flex-row gap-1 items-center'>
+                                                                <View><Text className='text-xs'>Replies</Text></View>
+                                                                <View><FontAwesome name="angle-down" /></View>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    }
+                                                </View>
+                                                <View className='pl-6 gap-2'>
+                                                    {
+                                                        comment.replies?.splice(0, showLenght).map((rp, i) => (
+                                                            <View key={i} className='gap-1'>
+                                                                <View className='flex-row items-center gap-2'>
+                                                                    <View>
+                                                                        <View className='w-7 h-7 bg-blue rounded-full'>
+                                                                            <Image source={{ uri: rp?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                                        </View>
+                                                                    </View>
+                                                                    <View>
+                                                                        <Text className='font-bold text-xs'>{rp?.user?.fname} {rp?.user?.lname}</Text>
+                                                                        <Text className='text-gray-500 text-xs'>@{rp?.user?.username} {moment(rp?.created_at)} ago</Text>
+                                                                    </View>
+                                                                </View>
+                                                                <Text className='text-xs'>{rp?.text}</Text>
+                                                                <TouchableOpacity className='flex-row gap-1 items-center'>
+                                                                    <View>
+                                                                        <Fontisto name="heart-alt" size={14} />
+                                                                    </View>
+                                                                    <View><Text className='text-xs'>{rp.comment_likes_count}</Text></View>
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        ))
+                                                    }
+
                                                 </View>
                                             </View>
                                         ))
