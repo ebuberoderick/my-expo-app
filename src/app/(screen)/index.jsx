@@ -21,9 +21,7 @@ export default function Page() {
   const fetchPosts = async () => {
     const { status, data } = await fetchPost()
     if (status) {
-      setPosts(data.data[0].data)
-      console.log(data.data[0].data);
-      
+      setPosts(data.data[0])
     }
     setLoading(false)
   }
@@ -52,7 +50,7 @@ export default function Page() {
           <View style={{ gap: 24 }}>
             {
               !loading && (
-                posts.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))
+                posts?.data?.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))
               )
             }
           </View>

@@ -113,7 +113,7 @@ const Profile = () => {
 
 
               {
-                !loading && posts?.length < 1 && (
+                !loading && posts?.data?.length < 1 && (
                   <View style={{ paddingVertical: 30, gap: 40 }}>
                     <Text className='text-center text-gray-400 text-lg' >You have not made any post yet</Text>
                     <Button text={"make your first post"} onPress={() => router.push("/extars/post")} />
@@ -122,9 +122,9 @@ const Profile = () => {
               }
 
               {
-                !loading && posts?.length > 0 && (
+                !loading && posts?.data?.length > 0 && (
                   <View style={{ gap: 24 }}>
-                    {posts?.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))}
+                    {posts?.data?.map((e, i) => (<PostCard openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} key={i} data={e} />))}
                   </View>
                 )
               }
@@ -136,7 +136,6 @@ const Profile = () => {
         </View>
       </ScrollView>
       <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} />
-      {/* <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} /> */}
       <AppBottomSheet ref={desRef}>
         <View className='gap-2 p-3' style={{ paddingBottom: 22 }}>
           <Text>Content</Text>
