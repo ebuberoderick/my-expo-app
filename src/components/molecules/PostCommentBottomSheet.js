@@ -30,11 +30,8 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         const { data, status } = await fetchPostComment({ post_id: id })
         if (status) {
             setCommentList(data.data[0].data);
-            // console.log(data.data[0].data);
-
         }
         updateloading(false)
-        // console.log("hisdfv");
     }
 
 

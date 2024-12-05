@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Animated from 'react-native-reanimated'
 import Carousel from "pinar";
 import { Image } from 'react-native';
