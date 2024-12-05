@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Platform, ScrollView, Text, TouchableOpacity } from "react-native";
+import { Platform, ScrollView, TouchableOpacity } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { View } from "react-native";
 import AppLayout from "../../components/layout/AppLayout";
 import HomePreloader from "../../components/perloader/HomePreloader";
 import PostCard from "~/components/molecules/PostCard";
-import inappLogo from "src/assets/images/inappLogo.png"
 import PostCommentBottomSheet from "~/components/molecules/PostCommentBottomSheet";
 import { fetchPost } from "~/services/authService";
 import { Image } from "react-native";
