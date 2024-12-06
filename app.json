@@ -34,12 +34,6 @@
         "projectId": "c9bfb44c-845a-4e12-8154-034fa8124e52"
       }
     },
-    "android": {
-      "package": "com.bube_code.totsapp",
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
-    },
     "owner": "totsapp"
   }
 }

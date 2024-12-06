@@ -10,7 +10,7 @@ import { Applogin } from '../../services/authService'
 import { SignInAuth } from '../../hooks/Auth'
 import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
-import Checkbox from 'expo-checkbox'
+import { CheckBox } from 'react-native-btr'
 
 
 const Login = () => {
@@ -42,7 +42,7 @@ const Login = () => {
   })
 
   useEffect(() => {
-    
+
   }, []);
 
 
@@ -62,7 +62,7 @@ const Login = () => {
             <View className="flex-row">
               <View className="flex-row gap-2 items-center flex-grow">
                 <View className="">
-                  <Checkbox value={isSelected} onValueChange={setSelection} color={isSelected && '#2877F2'} />
+                  <CheckBox checked={isSelected} color={isSelected && '#2877F2'} onPress={() => setSelection(!isSelected)} />
                 </View>
                 <Text className="text-xl dark:text-white">Remember me</Text>
               </View>

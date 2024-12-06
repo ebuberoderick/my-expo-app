@@ -8,10 +8,10 @@ import { Link, useRouter } from 'expo-router'
 import { useDispatch } from 'react-redux'
 import UseFormHandler from '../../hooks/useFormHandler'
 import Feather from 'react-native-vector-icons/Feather'
-import Checkbox from 'expo-checkbox'
 import { updateAppState } from '../../Store/reducers/AppDefault'
 import { Appregister } from '../../services/authService'
 import { SignInAuth } from '../../hooks/Auth'
+import { CheckBox } from 'react-native-btr'
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -89,7 +89,7 @@ const Register = () => {
                             <Text className="text-danger text-sm">{formHandler.error?.tnc}</Text>
                             <View className="flex-row justify-start gap-2 pr-5">
                                 <View className="relative top-1">
-                                    <Checkbox value={isSelected} onValueChange={setSelection} color={isSelected && '#2877F2'} />
+                                    <CheckBox checked={isSelected} color={isSelected && '#2877F2'} onPress={() => setSelection(!isSelected)} />
                                 </View>
                                 <View className="">
                                     <Text className="text-lg relative bottom-1">By signing up, you agree to our <Link href="/" className='text-blue'>Terms of Service</Link> and <Link href="/" className='text-blue'>Privacy Policy?</Link></Text>
