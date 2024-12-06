@@ -42,6 +42,7 @@ const AppBottomSheet = forwardRef(({ children, snapPoints, withFooter, FooterCon
             <BottomSheetModal
                 ref={sheetRef}
                 enablePanDownToClose
+                enableContentPanningGesture={false}
                 backdropComponent={renderBackdrop}
             >
                 <BottomSheetView>
@@ -52,38 +53,5 @@ const AppBottomSheet = forwardRef(({ children, snapPoints, withFooter, FooterCon
     }
 
 });
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        backgroundColor: 'grey',
-    },
-    input: {
-        marginTop: 8,
-        marginBottom: 10,
-        borderRadius: 10,
-        fontSize: 16,
-        lineHeight: 20,
-        padding: 8,
-        backgroundColor: 'rgba(151, 151, 151, 0.25)',
-    },
-    contentContainer: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    footerContainer: {
-        padding: 12,
-        margin: 12,
-        borderRadius: 12,
-        backgroundColor: '#80f',
-    },
-    footerText: {
-        textAlign: 'center',
-        color: 'white',
-        fontWeight: '800',
-    },
-});
-
 
 export default AppBottomSheet;

@@ -15,20 +15,19 @@ export const fetchUserProfile = (formData) => apiWithAuth.post("app/profile/fetc
 
 
 
-export const fetchCities = async (e, x) => {
-    const data = await axios.post("https://countriesnow.space/api/v0.1/countries/state/cities", { "country": e, "state": x }).then(res => { return res })
+
+export const fetchCountry = async () => {
+    const data = await axios.get("https://countriesnow.space/api/v0.1/countries/states").then(res => { return res })
     return data
 }
-
 
 export const fetchStates = async (e) => {
     const data = await axios.post("https://countriesnow.space/api/v0.1/countries/states", { "country": e }).then(res => { return res })
     return data
 }
 
-
-export const fetchCountry = async () => {
-    const data = await axios.get("https://countriesnow.space/api/v0.1/countries/states").then(res => { return res })
+export const fetchCities = async (e, x) => {
+    const data = await axios.post("https://countriesnow.space/api/v0.1/countries/state/cities", { "country": e, "state": x }).then(res => { return res })
     return data
 }
 

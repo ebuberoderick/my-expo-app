@@ -41,7 +41,7 @@ const ChangeLocation = () => {
 
 
     useEffect(() => {
-        fetchCountry().then(async (res) => {
+        fetchCountry().then(async (res) => {            
             const saveData = []
             const x = [...res.data?.data]
 
