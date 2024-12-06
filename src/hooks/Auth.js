@@ -1,19 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addData } from '../Store/reducers/UsersReducer';
-import { updateAppState } from '../Store/reducers/AppDefault';
 
 export function SignInAuth(data, dispatch) {
-  dispatch(addData(data?.data));
+  dispatch(data?.data)
   AsyncStorage.setItem("APPTOKEN", data?.data?.bearer_token)
 }
 
 
-export async function SignOut(dispatch) {
-  dispatch(addData({}))
-  dispatch(updateAppState({
-    location: "",
-    getStarted: false
-  }))
+export async function SignOut(userStore, appDefault) {
+  userStore({})
+  appDefault({ location: "", getStarted: false })
   AsyncStorage.removeItem("APPTOKEN")
 }
 
@@ -25,7 +20,7 @@ export function Session(user) {
   }
 
   if (Object?.keys(user).length !== 0) {
-    session.status = verifyJWT(user?.value?.bearer_token)
+    session.status = verifyJWT(user?.bearer_token)
   } else {
     session.status = 'unauthenticated'
   }

@@ -4,20 +4,20 @@ import AppInput from '../../components/organisms/AppInput'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 import Button from '../../components/organisms/Button'
-import { Link, useNavigation, useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import UseFormHandler from '../../hooks/useFormHandler'
 import { Applogin } from '../../services/authService'
 import { SignInAuth } from '../../hooks/Auth'
-import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
 import { CheckBox } from 'react-native-btr'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 
 const Login = () => {
-  const dispatch = useDispatch()
   const router = useRouter()
   const [isSelected, setSelection] = useState(false);
   const [formError, setFormError] = useState("")
+  const dispatch = useUserStore((state) => state.updateUserState)
 
   const formHandler = UseFormHandler({
     required: {
@@ -33,7 +33,7 @@ const Login = () => {
       setFormError("")
       const { status, data } = await Applogin(value).catch(err => console.log(err))
       if (status) {
-        SignInAuth(data, dispatch);
+        SignInAuth(data,dispatch);
         router.replace("/(screen)")
       } else {
         setFormError(data.message);

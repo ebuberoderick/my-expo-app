@@ -8,12 +8,12 @@ import UseFormHandler from '~/hooks/useFormHandler'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { AppUpdatePassword } from '~/services/authService'
 import AppInput from '~/components/organisms/AppInput'
-import { useSelector } from 'react-redux'
+import { useUserStore } from '~/Store/holders/UserStore'
 // import * as Burnt from "burnt";
 
 const ChangePassword = () => {
     const router = useRouter()
-    const user = useSelector((state) => state.User?.value);
+  const user = useUserStore((state) => state.storage);
 
 
     const formHandler = UseFormHandler({

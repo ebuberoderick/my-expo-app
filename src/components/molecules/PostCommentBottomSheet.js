@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TouchableHighlight, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import AppBottomSheet from '../organisms/AppBottomSheet'
 import Octicons from "react-native-vector-icons/Octicons"
@@ -6,18 +6,18 @@ import Fontisto from "react-native-vector-icons/Fontisto"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native'
-import { useSelector } from 'react-redux'
 import { BlurView } from 'expo-blur'
 import UseFormHandler from '~/hooks/useFormHandler'
 import { fetchPostComment, postComment, postCommentLike, postCommentReply } from '~/services/authService'
 import { moment } from '~/hooks/useMoment'
 import CommentPreloader from '../perloader/CommentPreloader'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
-    const user = useSelector((state) => state.User?.value);
+    const user = useUserStore((state) => state.storage);
     const [movedown, updateMovedown] = useState(false)
     const [loading, updateloading] = useState(true)
     const comRly = useRef(null)

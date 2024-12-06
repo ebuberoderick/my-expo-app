@@ -2,13 +2,14 @@ import { View } from 'react-native'
 import React, { useEffect } from 'react'
 import SplashScreen from '../components/organisms/SplashScreen'
 import { useRouter } from 'expo-router'
-import { useSelector } from 'react-redux'
 import { Session } from '../hooks/Auth'
+import { useAppDefaulstore } from '~/Store/holders/AppDefault'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const index = () => {
   const router = useRouter()
-  const user = useSelector((state) => state.User);
-  const appState = useSelector((state) => state.appDefault);
+  const user = useUserStore((state) => state.storage);
+  const appState = useAppDefaulstore((state) => state.storage);
   const isAuthenticated = Session(user);
   useEffect(() => {
     setTimeout(() => {

@@ -5,16 +5,18 @@ import EvilIcons from "react-native-vector-icons/EvilIcons"
 import AppInput from '../../components/organisms/AppInput'
 import Button from '../../components/organisms/Button'
 import { Link, useRouter } from 'expo-router'
-import { useDispatch } from 'react-redux'
 import UseFormHandler from '../../hooks/useFormHandler'
 import Feather from 'react-native-vector-icons/Feather'
-import { updateAppState } from '../../Store/reducers/AppDefault'
 import { Appregister } from '../../services/authService'
 import { SignInAuth } from '../../hooks/Auth'
 import { CheckBox } from 'react-native-btr'
+import { useAppDefaulstore } from '~/Store/holders/AppDefault'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const Register = () => {
-    const dispatch = useDispatch()
+    const dispatch = useUserStore((state) => state.updateUserState)
+    const { updateAppState } = useAppDefaulstore()
+
     const router = useRouter()
     const [isSelected, setSelection] = useState(false);
 
@@ -45,7 +47,7 @@ const Register = () => {
                     } else {
                         if (status) {
                             SignInAuth(data, dispatch);
-                            dispatch(updateAppState({ location: "/(auth)/location" }))
+                            updateAppState({ location: "/(auth)/location" })
                             router.replace("/(auth)/location")
                         } else {
                             let error = {}

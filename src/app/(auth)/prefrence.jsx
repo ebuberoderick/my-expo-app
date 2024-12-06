@@ -2,25 +2,24 @@ import { View, Text, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Button from '../../components/organisms/Button'
 import { useRouter } from 'expo-router'
-import { useDispatch, useSelector } from 'react-redux'
-import { updateAppState } from '../../Store/reducers/AppDefault'
 import { TouchableOpacity } from 'react-native'
 import PrefernceChip from '../../components/organisms/PrefernceChip'
 import { fetchPrefrence, updateUserPrefrence } from '../../services/authService'
+import { useUserStore } from '~/Store/holders/UserStore'
+import { useAppDefaulstore } from '~/Store/holders/AppDefault'
 
 const Preference = () => {
 
-    const user = useSelector((state) => state.User?.value);
+    const { updateAppState } = useAppDefaulstore()
+    const user = useUserStore((state) => state.storage);
     const [processing, setProcessing] = useState(false)
     const [err, setErr] = useState("")
     const [prefernceList, setPrefernceList] = useState([])
     const [list, setList] = useState([])
-
-    const dispatch = useDispatch()
     const router = useRouter()
 
     const move = () => {
-        dispatch(updateAppState({ location: "" }))
+        updateAppState({ location: "" })
         router.replace("/(screen)/")
     }
 

@@ -8,7 +8,6 @@ import { moment } from '~/hooks/useMoment'
 
 const CommentChip = ({ commentList }) => {
 
-    const user = useSelector((state) => state.User?.value);
     const [loading, updateloading] = useState(true)
     const comRly = useRef(null)
     const xt = useRef(null)

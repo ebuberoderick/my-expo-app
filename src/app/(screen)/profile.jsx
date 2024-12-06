@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, Platform, TextInput } from 'react-native'
+import { View, Text, ScrollView, Image, Platform } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
@@ -7,7 +7,6 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import { TouchableOpacity } from 'react-native'
 import { useRouter } from 'expo-router'
-import { useSelector } from 'react-redux'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import HomePreloader from '~/components/perloader/HomePreloader'
 import PostCard from '~/components/molecules/PostCard'
@@ -16,10 +15,11 @@ import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomShee
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import Button from '~/components/organisms/Button'
 import { fetchUserProfile } from '~/services/authService'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const Profile = () => {
   const router = useRouter()
-  const user = useSelector((state) => state.User?.value);
+  const user = useUserStore((state) => state.storage);
   const sheetRef = useRef(null);
   const desRef = useRef(null)
 

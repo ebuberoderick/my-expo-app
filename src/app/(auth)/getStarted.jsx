@@ -2,24 +2,25 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Button from '../../components/organisms/Button'
 import { useRouter } from 'expo-router'
-import { useDispatch } from 'react-redux'
 import { Image } from 'react-native'
-import { updateAppState } from '../../Store/reducers/AppDefault'
+import { useAppDefaulstore } from '~/Store/holders/AppDefault'
+
+
 
 
 const GetStarted = () => {
+    const { updateAppState } = useAppDefaulstore()
     const router = useRouter()
-    const dispatch = useDispatch()
 
     const getgoing = () => {
-        dispatch(updateAppState({ getStarted: true }))
+        updateAppState({ getStarted: true })
         router.replace("login")
     }
 
     return (
         <View className="flex-1 bg-white dark:bg-black pb-16 gap-3 justify-center">
             <View className="flex-grow justify-center">
-                <Image source={require("../../assets/images/welcome.png")} className="w-screen relative top-12" style={{height:"80%"}} />
+                <Image source={require("../../assets/images/welcome.png")} className="w-screen relative top-12" style={{ height: "80%" }} />
             </View>
             <View className="gap-7 px-3">
                 <View className="gap-5 mx-auto" style={{ width: 390 }}>

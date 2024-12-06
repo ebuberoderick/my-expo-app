@@ -36,7 +36,7 @@ export default function Page() {
       <ScrollView className="pt-12" indicatorStyle="white">
         <View className="h-14 items-center px-3 gap-3 flex-row sticky top-0">
           <View className="flex-grow">
-            <Image source={require("../../assets/images/inappLogo.png")} className="w-24 h-16" />
+            <Image source={require("../../assets/images/inappLogo.png")} style={{ width: 75, height: 22 }} />
           </View>
           <View><AntDesign name="search1" size={25} /></View>
           <TouchableOpacity className="relative">

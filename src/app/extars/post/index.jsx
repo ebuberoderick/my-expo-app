@@ -12,9 +12,9 @@ import { fetchPrefrence, makePost } from '~/services/authService'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import * as ImagePicker from 'expo-image-picker';
 import Animated from 'react-native-reanimated'
-import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { API_BASE_URL, getToken } from '~/services/httpService'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const Post = () => {
   const router = useRouter()
@@ -29,7 +29,7 @@ const Post = () => {
   const [readvShow, setReadvShow] = useState(7)
   const [contentErr, setContentErr] = useState("")
   const [prefErr, setPrefErr] = useState("")
-  const user = useSelector((state) => state.User?.value);
+  const user = useUserStore((state) => state.storage);
 
 
   const gotoPreview = () => {

@@ -9,7 +9,6 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native'
-import { FlatList } from 'react-native-web';
 
 const AppModal = ({ visible,children }) => {
   // const pan = Gesture.Pan();

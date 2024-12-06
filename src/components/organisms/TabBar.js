@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native';
 import Octicons from "react-native-vector-icons/Octicons"
@@ -7,11 +7,11 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { BlurView } from 'expo-blur';
-import { useSelector } from 'react-redux';
+import { useUserStore } from '~/Store/holders/UserStore';
 
 const TabBar = ({ state, navigation, descriptors }) => {
 
-    const user = useSelector((state) => state.User?.value);
+    const user = useUserStore((state) => state.storage);
 
     const icons = (label, isFocused) => {
         switch (label) {
@@ -28,8 +28,8 @@ const TabBar = ({ state, navigation, descriptors }) => {
                 return isFocused ? <Ionicons name="chatbubble-ellipses" size={28} color="#3591FC" /> : <Ionicons name="chatbubble-ellipses-outline" size={30} color="#000" />;
                 break
             case "profile":
-                return <View style={{height:35,width:35,padding:3}} className={`rounded-full overflow-hidden ${isFocused ? "bg-[#3591FC]" : "bg-gray-500"}`}>
-                    <Image source={{uri:user?.user?.avatar}} className="w-full h-full rounded-full" />
+                return <View style={{ height: 35, width: 35, padding: 3 }} className={`rounded-full overflow-hidden ${isFocused ? "bg-[#3591FC]" : "bg-gray-500"}`}>
+                    <Image source={{ uri: user?.user?.avatar }} className="w-full h-full rounded-full" />
                 </View>
                 break
             default:

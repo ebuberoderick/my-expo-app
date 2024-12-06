@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import AppLayout from '~/components/layout/AppLayout'
 import Button from '~/components/organisms/Button'
@@ -7,13 +7,13 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import EvilIcons from "react-native-vector-icons/EvilIcons"
 import Feather from "react-native-vector-icons/Feather"
 import { useRouter } from 'expo-router'
-import { useSelector } from 'react-redux'
 import UseFormHandler from '~/hooks/useFormHandler'
 import AppInput from '~/components/organisms/AppInput'
+import { useUserStore } from '~/Store/holders/UserStore'
 
 const PersonalData = () => {
     const router = useRouter()
-    const user = useSelector((state) => state.User?.value);
+    const user = useUserStore((state) => state.storage);
 
     const formHandler = UseFormHandler({
         required: {
@@ -34,34 +34,34 @@ const PersonalData = () => {
         },
 
         onSubmit: async (value) => {
-            if (value.password === value.cpassword) {
-                if (isSelected) {
-                    const { status, data } = await Appregister(value).catch(err => console.log(err))
-                    if (data.exception) {
-                        formHandler.setError((prevState) => ({ ...prevState, email: "This Email does not exist, Please reconfirm " }))
-                    } else {
-                        if (status) {
-                            SignInAuth(data, dispatch);
-                            dispatch(updateAppState({ location: "/(auth)/location" }))
-                            router.replace("/(auth)/location")
-                        } else {
-                            let error = {}
-                            for (const key in data.data) {
-                                error = { [key]: `${data.data[key][0]}` }
-                            }
-                            formHandler.setError((prevState) => error)
-                            if (data.message === "Username not available") {
-                                formHandler.setError((prevState) => ({ ...prevState, username: data.message }))
-                            }
-                        }
-                    }
+            // if (value.password === value.cpassword) {
+            //     if (isSelected) {
+            //         const { status, data } = await Appregister(value).catch(err => console.log(err))
+            //         if (data.exception) {
+            //             formHandler.setError((prevState) => ({ ...prevState, email: "This Email does not exist, Please reconfirm " }))
+            //         } else {
+            //             if (status) {
+            //                 SignInAuth(data, dispatch);
+            //                 dispatch(updateAppState({ location: "/(auth)/location" }))
+            //                 router.replace("/(auth)/location")
+            //             } else {
+            //                 let error = {}
+            //                 for (const key in data.data) {
+            //                     error = { [key]: `${data.data[key][0]}` }
+            //                 }
+            //                 formHandler.setError((prevState) => error)
+            //                 if (data.message === "Username not available") {
+            //                     formHandler.setError((prevState) => ({ ...prevState, username: data.message }))
+            //                 }
+            //             }
+            //         }
 
-                } else {
-                    formHandler.setError((prevState) => ({ ...prevState, tnc: 'Please accept Term of Service and Privacy Policy' }))
-                }
-            } else {
-                formHandler.setError((prevState) => ({ ...prevState, cpassword: 'Password Mis-match' }))
-            }
+            //     } else {
+            //         formHandler.setError((prevState) => ({ ...prevState, tnc: 'Please accept Term of Service and Privacy Policy' }))
+            //     }
+            // } else {
+            //     formHandler.setError((prevState) => ({ ...prevState, cpassword: 'Password Mis-match' }))
+            // }
 
         }
     })

@@ -12,18 +12,18 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { useRouter } from 'expo-router'
-import { useDispatch, useSelector } from 'react-redux'
 import { SignOut } from '~/hooks/Auth'
-import { updateAppState } from '~/Store/reducers/AppDefault'
+import { useUserStore } from '~/Store/holders/UserStore'
+import { useAppDefaulstore } from '~/Store/holders/AppDefault'
 
 const settings = () => {
-  const user = useSelector((state) => state.User?.value);
+  const user = useUserStore((state) => state.storage);
+  const userStore = useUserStore((state) => state.updateUserState);
+  const appDefault = useAppDefaulstore((state) => state.updateAppState);
   const router = useRouter()
-  const dispatch = useDispatch()
-
+  
   const out = async () => {
-    await SignOut(dispatch)
-    dispatch(updateAppState({ location: "" }))
+    await SignOut(userStore,appDefault)
     router.dismissAll();
     router.replace("/(auth)/login")
   }
