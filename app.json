@@ -20,6 +20,11 @@
         }
       ]
     ],
+    "splash": {
+      "image": "./assets/splashscreen_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "scheme": "totsapp",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
