@@ -8,7 +8,12 @@ export default function Layout() {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(screen)" />
+        <Stack.Screen name="extars/post" />
+        <Stack.Screen name="extars/profile" />
+      </Stack>
     </>
   )
 }

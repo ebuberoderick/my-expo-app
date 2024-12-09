@@ -50,7 +50,7 @@ const AppModal = ({ visible,children }) => {
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <GestureHandlerRootView>
-        <BlurView intensity={30} tint="light" experimentalBlurMethod='dimezisBlurView' className="flex-1 justify-end h-screen w-screen absolute top-0 bottom-0 right-0 left-0 z-50 bg-black">
+        <BlurView intensity={30} tint="light"  experimentalBlurMethod='dimezisBlurView' className="flex-1 justify-end h-screen w-screen absolute top-0 bottom-0 right-0 left-0 z-50 bg-black">
           <GestureDetector gesture={gesture}>
             <Animated.View style={[animatedStyles]} className="bg-white relative rounded-t-3xl w-full p-3 flex-grow max-h-[80%]" >
               <TouchableOpacity onPress={() => console.log("hi")} className="w-1/6 mx-auto bg-black h-2 rounded-full" />

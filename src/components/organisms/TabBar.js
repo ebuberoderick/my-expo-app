@@ -39,7 +39,7 @@ const TabBar = ({ state, navigation, descriptors }) => {
 
 
     return (
-        <BlurView experimentalBlurMethod='dimezisBlurView' intensity={40} className="absolute bottom-6 overflow-hidden mx-4 rounded-3xl flex-row">
+        <BlurView  experimentalBlurMethod='dimezisBlurView' intensity={40} className="absolute bottom-4 overflow-hidden mx-4 rounded-3xl flex-row">
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =

@@ -18,7 +18,6 @@ import { useUserStore } from '~/Store/holders/UserStore'
 
 const Post = () => {
   const router = useRouter()
-  const headers = { 'Authorization': getToken() }
   const [selectedImg, setSelectedImg] = useState([])
   const [list, setList] = useState([])
   const [isVisible, setModalVisiblity] = useState(false)
@@ -57,12 +56,12 @@ const Post = () => {
 
 
     formDatar.append("text", postText)
-    formDatar.append("preferences", preferences)
+    formDatar.append("preference", preferences)
     console.log(selectedImg);
 
     if (selectedImg.length > 0) {
       for (let index = 0; index < selectedImg.length; index++) {
-        formDatar.append(`image`, {
+        formDatar.append(`images[]`, {
           uri: selectedImg[index].uri,
           type: selectedImg[index].type,
           fileName: selectedImg[index].fileName,
@@ -76,6 +75,8 @@ const Post = () => {
     //   preferences
     // }
     console.log(formDatar);
+    const token = await getToken();
+    const headers = { Authorization: token, "Content-Type": "multipart/form-data" };
 
     await axios.post(`${API_BASE_URL}/app/post/create`, formDatar, { headers }).then(async (res) => {
       console.log(data);

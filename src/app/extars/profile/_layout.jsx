@@ -9,7 +9,13 @@ const _layout = () => {
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='settings' />
+          <Stack.Screen name='add-preference' />
+          <Stack.Screen name='change-location' />
+          <Stack.Screen name='change-password' />
+          <Stack.Screen name='personal-data' />
+          </Stack>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   )

@@ -23,7 +23,7 @@ const GetStarted = () => {
                 <Image source={require("../../assets/images/welcome.png")} className="w-screen relative top-12" style={{ height: "80%" }} />
             </View>
             <View className="gap-7 px-3">
-                <View className="gap-5 mx-auto" style={{ width: 390 }}>
+                <View className="gap-5 mx-auto" style={{ width: 350 }}>
                     <Text className="font-bold dark:text-white text-center" style={{ fontSize: 40 }}>Connect, <Text className="text-blue">Learn & Share</Text> as a Mom</Text>
                     <Text className="text-center dark:text-white">Connect, learn, and find support as you embark on the beautiful journey of motherhood.</Text>
                 </View>

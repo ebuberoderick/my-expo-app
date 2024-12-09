@@ -105,7 +105,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     return (
         <AppBottomSheet withFooter movedown={movedown} FooterContent={() => (
             <View className='w-full absolute bottom-0'>
-                <BlurView experimentalBlurMethod='dimezisBlurView' intensity={20} className='p-3 w-full flex-row gap-3 '>
+                <BlurView  experimentalBlurMethod='dimezisBlurView' intensity={20} className='p-3 w-full flex-row gap-3 '>
                     <View className='border border-gray-300 flex-row flex-grow rounded-3xl'>
                         <View className='p-2'>
                             <View className='w-10 h-10 items-center justify-center bg-blue rounded-full'>
@@ -175,9 +175,6 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                                             <Feather name="refresh-cw" size={18} />
                                                         </View>
                                                         <View><Text className='text-xs'>{comment.replies.length}</Text></View>
-                                                        {
-                                                            console.log(comment.replies)
-                                                        }
                                                     </TouchableOpacity>
                                                     <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
                                                         <View>
