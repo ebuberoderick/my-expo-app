@@ -15,7 +15,6 @@ const _layout = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-
         <GestureHandlerRootView>
           <BottomSheetModalProvider>
             <Tabs screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
