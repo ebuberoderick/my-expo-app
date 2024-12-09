@@ -106,5 +106,6 @@ export default function Page() {
       </View>
       <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} />
     </AppLayout>
+       
   );
 }

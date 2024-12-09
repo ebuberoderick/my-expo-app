@@ -7,7 +7,6 @@ import { Platform } from 'react-native';
 const _layout = () => {
   enableScreens(false);
   return (
-    
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}

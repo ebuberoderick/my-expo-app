@@ -38,7 +38,7 @@ const PostCard = ({ data, openBottomSheet }) => {
 
 
   return (
-    <View className="gap-4">
+    <View className="gap-4" style={{paddingTop:2}}>
       <View className="flex-row gap-2 items-center">
         <Animated.View>
           <Animated.View className="w-11 h-11 overflow-hidden rounded-full">
