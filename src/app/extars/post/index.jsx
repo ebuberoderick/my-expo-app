@@ -8,6 +8,7 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import Button from '~/components/organisms/Button'
 import { useRouter } from 'expo-router'
 import Carousel from "pinar";
+import * as FileSystem from 'expo-file-system';
 import { fetchPrefrence, makePost } from '~/services/authService'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import * as ImagePicker from 'expo-image-picker';
@@ -24,7 +25,7 @@ const Post = () => {
   const [preview, setPreview] = useState(false)
   const [prefernceList, setPrefernceList] = useState([])
   const [postText, setPostText] = useState("")
-  const [readShow, setReadShow] = useState(true)
+  const [processing, setProcessing] = useState(false)
   const [readvShow, setReadvShow] = useState(7)
   const [contentErr, setContentErr] = useState("")
   const [prefErr, setPrefErr] = useState("")
@@ -45,49 +46,43 @@ const Post = () => {
     }
   }
 
-
   const postNow = async () => {
-    const preferences = []
-    list.forEach(element => {
-      preferences.push(element.value.toString())
-    });
-
-    const formDatar = new FormData()
-
-
-    formDatar.append("text", postText)
-    formDatar.append("preference", preferences)
-    console.log(selectedImg);
-
+    const preferences = list.map((element) => element.value.toString());
+  
+    const formDatar = new FormData();
+    formDatar.append("text", postText);
+    formDatar.append("preference", JSON.stringify(preferences)); // Ensure preferences are properly formatted.
+  
     if (selectedImg.length > 0) {
       for (let index = 0; index < selectedImg.length; index++) {
-        formDatar.append(`images[]`, {
-          uri: selectedImg[index].uri,
-          type: selectedImg[index].type,
-          fileName: selectedImg[index].fileName,
-          name: selectedImg[index].fileName
-        })
+        const img = selectedImg[index];
+        formDatar.append("images[]", {
+          uri: Platform.OS === "android" ? img.uri : img.uri.replace("file://", ""), // Remove "file://" prefix for iOS
+          type: img.type || "image/jpeg", // Ensure a default type is provided
+          name: img.fileName || `image_${index}.jpg`, // Provide a default name if missing
+        });
       }
     }
-    // x = {
-    //   text: postText,
-    //   image: selectedImg,
-    //   preferences
-    // }
-    console.log(formDatar);
-    const token = await getToken();
-    const headers = { Authorization: token, "Content-Type": "multipart/form-data" };
+  
+    setProcessing(true);
+  
+    try {
+      const token = await getToken();
+      const headers = { 
+        Authorization: token, 
+        "Content-Type": "multipart/form-data" 
+      };
+  
+      const response = await axios.post(`${API_BASE_URL}/app/post/create`, formDatar, { headers });
+      console.log("Post created successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading post:", error.response?.data || error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+  
 
-    await axios.post(`${API_BASE_URL}/app/post/create`, formDatar, { headers }).then(async (res) => {
-      console.log(data);
-    }).catch((error) => {
-      console.log(error);
-    })
-
-    // const { status, data } = await makePost(formDatar).catch(e => console.log(e))
-    // console.log(data);
-
-  }
 
   const getPrefrence = async () => {
     const { status, data } = await fetchPrefrence().catch(err => console.log(err))
@@ -207,12 +202,7 @@ const Post = () => {
               {
                 postText && (
                   <View className="gap-1">
-                    <Animated.Text
-                      onTextLayout={({ nativeEvent: { lines } }) =>
-                        setReadvShow(lines.length)
-                      }
-                      className="text-sm" numberOfLines={readShow ? 3 : 0} ellipsizeMode='clip'>{postText}</Animated.Text>
-                    {/* {readShow ? <Text onPress={() => setReadShow(false)} className="text-sm text-blue">... Read more</Text> : <Text onPress={() => setReadShow(true)} className="text-sm text-blue">show less</Text>} */}
+                    <Animated.Text className="text-sm">{postText}</Animated.Text>
                   </View>
                 )
               }
@@ -236,7 +226,7 @@ const Post = () => {
             </View>
           </ScrollView>
           <View className='px-3 pt-3' style={{ paddingBottom: 30 }}>
-            <Button text="Post" onPress={postNow} />
+            <Button text="Post" processing={processing} onPress={postNow} />
           </View>
         </View>
       </Modal>
@@ -290,6 +280,7 @@ const Post = () => {
             </View>
           </View>
         </View>
+
         <View className='pt-3' style={{ paddingBottom: 30 }}>
           <Button text="Preview" onPress={gotoPreview} />
         </View>

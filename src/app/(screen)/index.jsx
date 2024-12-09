@@ -63,15 +63,9 @@ export default function Page() {
   return (
     <AppLayout>
       <View>
-        {
-          loading && (
-            <ScrollView>
-              <HomePreloader />
-            </ScrollView>
-          )
-        }
         <FlatList
           data={posts}
+          ListEmptyComponent={<HomePreloader />}
           style={{ paddingTop: 38, paddingHorizontal: 10 }}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (<PostCard key={index} data={item} openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} />)}
@@ -106,6 +100,6 @@ export default function Page() {
       </View>
       <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} />
     </AppLayout>
-       
+
   );
 }

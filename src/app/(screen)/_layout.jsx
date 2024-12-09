@@ -4,8 +4,7 @@ import TabBar from '../../components/organisms/TabBar'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { enableScreens } from 'react-native-screens';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 const _layout = () => {
   const router = useRouter()
@@ -13,7 +12,7 @@ const _layout = () => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'height' : undefined}
     >
       <GestureHandlerRootView>
         <BottomSheetModalProvider>

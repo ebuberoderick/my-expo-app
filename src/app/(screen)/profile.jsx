@@ -16,6 +16,9 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import Button from '~/components/organisms/Button'
 import { fetchUserProfile } from '~/services/authService'
 import { useUserStore } from '~/Store/holders/UserStore'
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import { API_BASE_URL, getToken } from '~/services/httpService'
 
 const Profile = () => {
   const router = useRouter()
@@ -26,6 +29,63 @@ const Profile = () => {
   const [loading, setLoading] = useState(true)
   const [comments, setComments] = useState([])
   const [posts, setPosts] = useState([])
+
+
+  const uploadImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true
+    });
+
+    if (!result.canceled) {
+      const image = result.assets[0];
+      let fileUri = image.uri;
+
+      console.log(image,Platform.OS);
+
+      // For Android, resolve file path
+      if (Platform.OS === 'android') {
+        const newPath = `${FileSystem.documentDirectory}${image.fileName || `image_${Date.now()}.jpg`}`;
+        await FileSystem.copyAsync({ from: fileUri, to: newPath });
+        fileUri = newPath;
+      }
+      
+
+
+      const formData = new FormData();
+      formData.append('avatar', {
+        uri: fileUri,
+        type: image.type || 'image/jpeg',
+        name: image.fileName || `image_${Date.now()}.jpg`,
+      });
+
+      try {
+        const token = await getToken();
+        const response = await axios.post(`${API_BASE_URL}/app/profile/change_avatar`, formData, {
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('Upload successful:', response.data,Platform.OS);
+      } catch (error) {
+        console.error('Error uploading image:', error.response?.data || error.message,Platform.OS);
+      }
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const fetchPosts = async () => {
     const { status, data } = await fetchUserProfile({ id: user.user.id.toString() })
@@ -38,6 +98,9 @@ const Profile = () => {
 
   useEffect(() => {
     fetchPosts()
+    setInterval(() => {
+      fetchPosts()
+    }, 5000);
   }, [])
 
 
@@ -64,9 +127,9 @@ const Profile = () => {
                 <View className={`rounded-full bg-gray-200 overflow-hidden`}>
                   <Image source={{ uri: user?.user?.avatar }} className="w-full h-full rounded-full" />
                 </View>
-                <View className='bg-white absolute bottom-0 right-0 justify-center items-center rounded-full' style={{ width: 40, height: 40 }}>
+                <TouchableOpacity onPress={uploadImage} className='bg-white absolute bottom-0 right-0 justify-center items-center rounded-full' style={{ width: 40, height: 40 }}>
                   <Ionicons name="camera-outline" size={25} />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
             <View className='gap-2' style={{ paddingVertical: 56 }}>
