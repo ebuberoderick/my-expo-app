@@ -103,7 +103,7 @@ const Register = () => {
                         </View>
                         <View className="gap-4">
                             <Button processing={formHandler.proccessing} text="Create Account" onPress={() => formHandler.submit()} />
-                            <Text className="text-center text-xl items-center">Already have an account? <Pressable onPress={() => router.back()}><Text className="text-center text-xl relative top-2 text-blue">Login</Text></Pressable></Text>
+                            <Text className="text-center text-xl items-center">Already have an account? <Pressable onPress={() => router.back()}><Text className="text-center text-xl relative text-blue" style={{ top: Platform.OS === 'ios' ? 12 : 6 }}>Login</Text></Pressable></Text>
                         </View>
                     </View>
                 </View>

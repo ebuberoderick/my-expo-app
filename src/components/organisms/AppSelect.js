@@ -36,7 +36,7 @@ const DropdownComponent = ({ icon, placeholder, error, onChange, options }) => {
 
     const updateSelect = (v) => {
         setValue(v)
-        onChange(v.value)
+        onChange(v)
         desRef.current.dismiss()
     }
 
