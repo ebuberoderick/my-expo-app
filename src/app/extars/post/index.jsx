@@ -46,42 +46,46 @@ const Post = () => {
     }
   }
 
+
   const postNow = async () => {
     const preferences = list.map((element) => element.value.toString());
-  
     const formDatar = new FormData();
     formDatar.append("text", postText);
-    formDatar.append("preference", JSON.stringify(preferences)); // Ensure preferences are properly formatted.
-  
-    if (selectedImg.length > 0) {
-      for (let index = 0; index < selectedImg.length; index++) {
-        const img = selectedImg[index];
-        formDatar.append("images[]", {
-          uri: Platform.OS === "android" ? img.uri : img.uri.replace("file://", ""), // Remove "file://" prefix for iOS
-          type: img.type || "image/jpeg", // Ensure a default type is provided
-          name: img.fileName || `image_${index}.jpg`, // Provide a default name if missing
-        });
-      }
-    }
-  
+    formDatar.append("preference", JSON.stringify(preferences));
+    selectedImg.forEach((image, index) => {
+      const uriParts = image.uri.split('.');
+      const fileType = uriParts[uriParts.length - 1];
+      formDatar.append(`image[]`, {
+        uri: image.uri,
+        name: `image_${index}.${fileType}`,
+        type: `image/${fileType}`,
+      });
+    });
+
     setProcessing(true);
-  
+
     try {
       const token = await getToken();
-      const headers = { 
-        Authorization: token, 
-        "Content-Type": "multipart/form-data" 
+      const headers = {
+        Authorization: token,
+        "Content-Type": "multipart/form-data",
       };
-  
+
       const response = await axios.post(`${API_BASE_URL}/app/post/create`, formDatar, { headers });
-      console.log("Post created successfully:", response.data);
+      if (response.status) {
+        router.replace("/profile")
+      }
     } catch (error) {
       console.error("Error uploading post:", error.response?.data || error.message);
     } finally {
       setProcessing(false);
     }
   };
-  
+
+
+
+
+
 
 
   const getPrefrence = async () => {

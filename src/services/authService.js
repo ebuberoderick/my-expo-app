@@ -34,6 +34,7 @@ export const fetchCities = async (e, x) => {
 
 export const fetchPrefrence = () => apiWithAuth.post("/app/onboarding/fetch_app_preference").then(getApiResponse).catch(getErrorResponse);
 export const updateUserPrefrence = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
+export const updateUserDescription = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
 
 
 

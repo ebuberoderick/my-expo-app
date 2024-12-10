@@ -43,8 +43,6 @@ const Addpreference = () => {
                 saveData.push(element?.value)
             });
 
-            console.log(saveData);
-
             const { data, status } = await updateUserPrefrence({ preference: saveData })
             if (status) {
                 // Burnt.alert({

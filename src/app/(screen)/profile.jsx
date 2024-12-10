@@ -12,9 +12,9 @@ import HomePreloader from '~/components/perloader/HomePreloader'
 import PostCard from '~/components/molecules/PostCard'
 import AppBottomSheet from '~/components/organisms/AppBottomSheet'
 import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomSheet'
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Button from '~/components/organisms/Button'
-import { fetchPrefrence, fetchUserProfile } from '~/services/authService'
+import { fetchPrefrence, fetchUserProfile, updateUserDescription } from '~/services/authService'
 import { useUserStore } from '~/Store/holders/UserStore'
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -26,7 +26,8 @@ const Profile = () => {
   const user = useUserStore((state) => state.storage);
   const sheetRef = useRef(null);
   const [list, setList] = useState([])
-  const [postText, setPostText] = useState([])
+  const [processing, setProcessing] = useState(false)
+  const [postText, setPostText] = useState(user?.user?.description)
   const desRef = useRef(null)
   const updateUserState = useUserStore((state) => state.updateUserState);
 
@@ -99,18 +100,28 @@ const Profile = () => {
     setLoading(false)
   }
 
+  const postDes = async () => {
+    setProcessing(true)
+    const { data, status } = await updateUserDescription({ description: postText })
+    if (status) {
+      console.log(data);
+    }
+    setProcessing(false)
+  }
+
   useFocusEffect(
     useCallback(() => {
       getPrefrence()
+      fetchPosts()
     }, [])
   )
 
   useEffect(() => {
     fetchPosts()
     getPrefrence()
-    setInterval(() => {
-      fetchPosts()
-    }, 5000);
+    // setInterval(() => {
+    //   fetchPosts()
+    // }, 5000);
   }, [])
 
 
@@ -164,7 +175,7 @@ const Profile = () => {
                   <Text className=''><Feather name="edit-2" size={17} /></Text>
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontSize: 13 }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dolore nisi, necessitatibus deserunt maiores totam nam! Dignissimos tenetur ducimus eaque necessitatibus aliquid. Consequatur soluta assumenda sed facilis alias culpa provident.</Text>
+              <Text style={{ fontSize: 13, color: !user?.user?.description && "#94a3b8" }}>{user?.user?.description ? user?.user?.description : "No description"}</Text>
             </View>
             <View className='gap-2'>
               <View className='flex-row justify-between items-center' style={{ paddingRight: 2 }}>
@@ -188,7 +199,10 @@ const Profile = () => {
               {
                 !loading && posts?.data?.length < 1 && (
                   <View style={{ paddingVertical: 30, gap: 40 }}>
-                    <Text className='text-center text-gray-400 text-lg' >You have not made any post yet</Text>
+                    <View className=''>
+                      <View className='justify-center items-center mx-auto' style={{ width: 300 }}><MaterialCommunityIcons name="post" size={150} color={"#94a3b8"} /></View>
+                      <Text className='text-center text-gray-400 text-lg' >You have not made any post yet</Text>
+                    </View>
                     <Button text={"make your first post"} onPress={() => router.push("/extars/post")} />
                   </View>
                 )
@@ -213,9 +227,9 @@ const Profile = () => {
         <View className='gap-2 p-3' style={{ paddingBottom: 22 }}>
           <Text>Content</Text>
           <View className='border' style={{ borderRadius: 9, paddingHorizontal: 8, borderColor: "#cbd5e1" }}>
-            <TextInput onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />
+            <TextInput defaultValue={postText} onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />
           </View>
-          <Button text="Done" />
+          <Button processing={processing} onPress={() => postDes()} text="Done" />
         </View>
       </AppBottomSheet>
     </AppLayout>
