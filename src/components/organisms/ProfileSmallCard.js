@@ -1,5 +1,5 @@
-import { View, Text, Image, Platform, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, Image, Platform, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { useUserStore } from '~/Store/holders/UserStore';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -10,7 +10,7 @@ import { API_BASE_URL, getToken } from '~/services/httpService'
 const ProfileSmallCard = () => {
     const user = useUserStore((state) => state.storage);
     const updateUserState = useUserStore((state) => state.updateUserState);
-
+    const [processing, setProccessing] = useState(false)
 
     const uploadImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -20,6 +20,7 @@ const ProfileSmallCard = () => {
         });
 
         if (!result.canceled) {
+            setProccessing(true)
             const imageUri = result.assets[0].uri;
             const uriParts = imageUri.split('.');
             const fileType = uriParts[uriParts.length - 1]; // Get file extension
@@ -49,6 +50,7 @@ const ProfileSmallCard = () => {
             } catch (error) {
                 console.error("Error uploading image:", error.response?.data || error.message);
             }
+            setProccessing(false)
         }
     };
 
@@ -58,6 +60,9 @@ const ProfileSmallCard = () => {
                 <View style={{ width: 120, height: 120 }} className='relative mx-auto'>
                     <View className={`rounded-full bg-gray-200 overflow-hidden`}>
                         <Image source={{ uri: user?.user?.avatar }} className="w-full h-full rounded-full" />
+                        {processing && (<View className='absolute w-full h-full items-center justify-center' style={{ backgroundColor: "#e2e8f0a1" }}>
+                            <ActivityIndicator size="large" color="#4CAF50" />
+                        </View>)}
                     </View>
                     <TouchableOpacity onPress={uploadImage} className='bg-white absolute bottom-0 right-0 justify-center items-center rounded-full' style={{ width: 40, height: 40 }}>
                         <Ionicons name="camera-outline" size={25} />
