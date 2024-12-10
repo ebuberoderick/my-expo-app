@@ -17,6 +17,7 @@ import Button from '~/components/organisms/Button'
 import { fetchUserProfile } from '~/services/authService'
 import { useUserStore } from '~/Store/holders/UserStore'
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { API_BASE_URL, getToken } from '~/services/httpService'
 
@@ -25,6 +26,8 @@ const Profile = () => {
   const user = useUserStore((state) => state.storage);
   const sheetRef = useRef(null);
   const desRef = useRef(null)
+  const updateUserState = useUserStore((state) => state.updateUserState);
+
 
   const [loading, setLoading] = useState(true)
   const [comments, setComments] = useState([])
@@ -41,16 +44,12 @@ const Profile = () => {
       const image = result.assets[0];
       let fileUri = image.uri;
 
-      console.log(image,Platform.OS);
-
       // For Android, resolve file path
       if (Platform.OS === 'android') {
         const newPath = `${FileSystem.documentDirectory}${image.fileName || `image_${Date.now()}.jpg`}`;
         await FileSystem.copyAsync({ from: fileUri, to: newPath });
         fileUri = newPath;
       }
-      
-
 
       const formData = new FormData();
       formData.append('avatar', {
@@ -67,30 +66,21 @@ const Profile = () => {
             'Content-Type': 'multipart/form-data',
           },
         });
-        console.log('Upload successful:', response.data,Platform.OS);
+        const data = {}
+        data.bearer_token = user?.bearer_token
+        data.user = response.data.data[0]
+        updateUserState(data)
       } catch (error) {
-        console.error('Error uploading image:', error.response?.data || error.message,Platform.OS);
+        console.error('Error uploading image:', error.response?.data || error.message);
       }
     }
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   const fetchPosts = async () => {
     const { status, data } = await fetchUserProfile({ id: user.user.id.toString() })
     if (status) {
-      setPosts(data.data[1])
+      setPosts(data.data[2])
     }
     setLoading(false)
   }
@@ -163,11 +153,11 @@ const Profile = () => {
                 </View>
               </View>
               <View className="flex-wrap flex-row gap-4">
-                {
+                {/* {
                   user?.user?.preference?.map((data, i) => (
                     <PrefernceChip showClose compare={list} onPress={(e) => updateList(e)} key={i} value={data.value} text={data.label} />
                   ))
-                }
+                } */}
               </View>
             </View>
             <View className='pb-32 gap-3'>

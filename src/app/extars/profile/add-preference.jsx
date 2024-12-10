@@ -6,6 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { useRouter } from 'expo-router'
 import { fetchPrefrence, updateUserPrefrence } from '~/services/authService'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
+import { useUserStore } from '~/Store/holders/UserStore'
 // import * as Burnt from "burnt";
 
 const Addpreference = () => {
@@ -15,12 +16,18 @@ const Addpreference = () => {
     const [list, setList] = useState([])
     const [loading, setloading] = useState(false)
     const [prefernceList, setPrefernceList] = useState([])
+    const updateUserState = useUserStore((state) => state.updateUserState);
+    const ux = useUserStore((state) => state.storage);
 
     const getPrefrence = async () => {
         const { status, data } = await fetchPrefrence().catch(err => console.log(err))
         if (status) {
             const saveData = []
+            const myArry = ux.user.preference
             await data.data[0].forEach(element => {
+                if (myArry.includes(element.id)) {
+                    setList(prv => [...prv,{ value: element.id, label: element.name }])
+                }
                 saveData.push({ value: element.id, label: element.name })
             });
             setPrefernceList([...saveData])
@@ -35,7 +42,10 @@ const Addpreference = () => {
             list.forEach(element => {
                 saveData.push(element?.value)
             });
-            const { data, status } = await updateUserPrefrence(saveData.toString())
+
+            console.log(saveData);
+
+            const { data, status } = await updateUserPrefrence({ preference: saveData })
             if (status) {
                 // Burnt.alert({
                 //     title: "Location Updated.",
@@ -44,6 +54,10 @@ const Addpreference = () => {
                 //     haptic: "success",
                 //     message: "Your location was updated .",
                 // });
+                const daa = {}
+                daa.bearer_token = ux?.bearer_token
+                daa.user = data.data[0]
+                updateUserState(daa)
                 router.back()
             }
         } else {
