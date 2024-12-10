@@ -28,7 +28,7 @@ const ProfileSmallCard = () => {
             const formData = new FormData();
             formData.append("avatar", {
                 uri: imageUri,
-                name: `avatar.${fileType}`,
+                name: `avatar_${new Date()}.${fileType}`,
                 type: `image/${fileType}`, // Example: image/jpeg or image/png
             });
 

@@ -25,8 +25,10 @@ const Addpreference = () => {
             const saveData = []
             const myArry = ux.user.preference
             await data.data[0].forEach(element => {
-                if (myArry.includes(element.id)) {
-                    setList(prv => [...prv,{ value: element.id, label: element.name }])
+                if (myArry.length > 0) {
+                    if (myArry.includes(element.id)) {
+                        setList(prv => [...prv, { value: element.id, label: element.name }])
+                    }
                 }
                 saveData.push({ value: element.id, label: element.name })
             });

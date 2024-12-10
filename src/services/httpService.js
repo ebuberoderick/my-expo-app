@@ -11,7 +11,7 @@ export const getToken = async () => {
 };
 
 const timeoutConfig = {
-  timeout: 30000,
+  timeout: 10000,
   timeoutErrorMessage: "Server taking too long to respond. Try again.",
 };
 

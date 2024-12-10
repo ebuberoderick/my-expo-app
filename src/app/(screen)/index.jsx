@@ -71,6 +71,7 @@ export default function Page() {
           renderItem={({ item, index }) => (<PostCard key={index} data={item} openBottomSheet={(e) => { setComments(e); sheetRef.current?.present() }} />)}
           onEndReached={loadMorePosts}
           onEndReachedThreshold={0.5}
+          ItemSeparatorComponent={() => <View style={{height:20}} />}
           refreshControl={
             <RefreshControl
               style={{ position: "relative", top: 1000, display: "none" }}

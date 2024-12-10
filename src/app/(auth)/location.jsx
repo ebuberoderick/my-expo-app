@@ -40,16 +40,17 @@ const Location = () => {
         })
     }
 
+    const fetCty = () => fetchCountry().then(async (res) => {
+        const saveData = []
+        res?.data?.data[0].forEach(element => {
+            saveData.push({ label: element?.name, value: element?.id })
+        });
+        setCountryList([...saveData])
+    })
 
 
     useEffect(() => {
-        fetchCountry().then(async (res) => {
-            const saveData = []
-            res?.data?.data[0].forEach(element => {
-                saveData.push({ label: element?.name, value: element?.id })
-            });
-            setCountryList([...saveData])
-        })
+        fetCty()
     }, [])
 
     const formHandler = UseFormHandler({

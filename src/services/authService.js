@@ -21,7 +21,7 @@ export const fetchCities = (formData) => apiWithAuth.post("/app/onboarding/fetch
 
 export const fetchPrefrence = () => apiWithAuth.post("/app/onboarding/fetch_app_preference").then(getApiResponse).catch(getErrorResponse);
 export const updateUserPrefrence = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
-export const updateUserDescription = (formData) => apiWithAuth.post("app/profile/update_preference", formData).then(getApiResponse).catch(getErrorResponse);
+export const updateUserDescription = (formData) => apiWithAuth.post("app/profile/update_description", formData).then(getApiResponse).catch(getErrorResponse);
 
 
 

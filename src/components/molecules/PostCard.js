@@ -64,7 +64,7 @@ const PostCard = ({ data, openBottomSheet }) => {
               <Carousel loop showsControls={false} dotStyle={{ borderWidth: 1, borderColor: "#fff", width: 8, height: 8, gap: 4, borderRadius: 99, marginHorizontal: 3 }} activeDotStyle={{ backgroundColor: "#fff", width: 8, height: 8, borderRadius: 99, marginHorizontal: 3 }} >
                 {
                   data?.image?.map((e, i) => (
-                    <View key={i} className='w-full flex-1'>
+                    <View key={i} className='w-full flex-1' style={{backgroundColor:"#2877F210"}}>
                       <Image source={{ uri: e }} className='w-full h-full' />
                     </View>
                   ))

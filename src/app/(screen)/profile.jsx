@@ -20,6 +20,7 @@ import ProfileSmallCard from '~/components/organisms/ProfileSmallCard'
 const Profile = () => {
   const router = useRouter()
   const user = useUserStore((state) => state.storage);
+  const updateUserState = useUserStore((state) => state.updateUserState);
   const sheetRef = useRef(null);
   const [list, setList] = useState([])
   const [processing, setProcessing] = useState(false)
@@ -55,9 +56,13 @@ const Profile = () => {
 
   const postDes = async () => {
     setProcessing(true)
-    const { data, status } = await updateUserDescription({ description: postText })
+    const { data, status } = await updateUserDescription({ description: postText.toString() })
     if (status) {
-      console.log(data);
+      const daa = {}
+      daa.bearer_token = user?.bearer_token
+      daa.user = data.data[0]
+      updateUserState(daa)
+      desRef.current.dismiss()
     }
     setProcessing(false)
   }
@@ -65,8 +70,8 @@ const Profile = () => {
   useFocusEffect(
     useCallback(() => {
       getPrefrence()
-      fetchPosts()
-    }, [])
+      fetchPosts()  
+    }, [user])
   )
 
   useEffect(() => {

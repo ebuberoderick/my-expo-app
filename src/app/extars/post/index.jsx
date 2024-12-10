@@ -177,7 +177,7 @@ const Post = () => {
                     <Animated.View className="">
                       <Text className='text-xs'>@{user?.user?.username}</Text>
                     </Animated.View>
-                    <Animated.View className=""><Text className='text-xs'>10mins ago</Text></Animated.View>
+                    <Animated.View className=""><Text className='text-xs'>now</Text></Animated.View>
                   </View>
                 </View>
               </View>

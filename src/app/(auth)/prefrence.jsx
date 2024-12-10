@@ -12,6 +12,7 @@ const Preference = () => {
 
     const { updateAppState } = useAppDefaulstore()
     const user = useUserStore((state) => state.storage);
+    const updateUserState = useUserStore((state) => state.updateUserState);
     const [processing, setProcessing] = useState(false)
     const [err, setErr] = useState("")
     const [prefernceList, setPrefernceList] = useState([])
@@ -28,7 +29,7 @@ const Preference = () => {
         if (status) {
             const saveData = []
             await data.data[0].forEach(element => {
-                saveData.push({ value: element.name, label: element.name })
+                saveData.push({ value: element.id, label: element.name })
             });
             setPrefernceList([...saveData])
         }
@@ -47,8 +48,13 @@ const Preference = () => {
         setProcessing(true)
         setErr("")
         if (list.length > 2) {
-            const { data, status } = await updateUserPrefrence(list)
+            const { data, status } = await updateUserPrefrence({preference:list})
+            console.log(data);
             if (status) {
+                const daa = {}
+                daa.bearer_token = user?.bearer_token
+                daa.user = data.data[0]
+                updateUserState(daa)
                 move()
             }
         } else {
