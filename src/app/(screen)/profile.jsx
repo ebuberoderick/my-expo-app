@@ -1,12 +1,12 @@
-import { View, Text, ScrollView, Image, Platform } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, ScrollView, Image, Platform, TextInput } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import { TouchableOpacity } from 'react-native'
-import { useRouter } from 'expo-router'
+import { useFocusEffect, useRouter } from 'expo-router'
 import PrefernceChip from '~/components/organisms/PrefernceChip'
 import HomePreloader from '~/components/perloader/HomePreloader'
 import PostCard from '~/components/molecules/PostCard'
@@ -14,7 +14,7 @@ import AppBottomSheet from '~/components/organisms/AppBottomSheet'
 import PostCommentBottomSheet from '~/components/molecules/PostCommentBottomSheet'
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import Button from '~/components/organisms/Button'
-import { fetchUserProfile } from '~/services/authService'
+import { fetchPrefrence, fetchUserProfile } from '~/services/authService'
 import { useUserStore } from '~/Store/holders/UserStore'
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -25,9 +25,10 @@ const Profile = () => {
   const router = useRouter()
   const user = useUserStore((state) => state.storage);
   const sheetRef = useRef(null);
+  const [list, setList] = useState([])
+  const [postText, setPostText] = useState([])
   const desRef = useRef(null)
   const updateUserState = useUserStore((state) => state.updateUserState);
-
 
   const [loading, setLoading] = useState(true)
   const [comments, setComments] = useState([])
@@ -76,6 +77,19 @@ const Profile = () => {
     }
   };
 
+  const getPrefrence = async () => {
+    const { status, data } = await fetchPrefrence().catch(err => console.log(err))
+    if (status) {
+      const myArry = user.user.preference
+      const ar = []
+      await data.data[0].forEach(element => {
+        if (myArry.includes(element.id)) {
+          ar.push({ value: element.id, label: element.name })
+        }
+      });
+      setList(ar)
+    }
+  }
 
   const fetchPosts = async () => {
     const { status, data } = await fetchUserProfile({ id: user.user.id.toString() })
@@ -85,9 +99,15 @@ const Profile = () => {
     setLoading(false)
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      getPrefrence()
+    }, [])
+  )
 
   useEffect(() => {
     fetchPosts()
+    getPrefrence()
     setInterval(() => {
       fetchPosts()
     }, 5000);
@@ -153,11 +173,11 @@ const Profile = () => {
                 </View>
               </View>
               <View className="flex-wrap flex-row gap-4">
-                {/* {
-                  user?.user?.preference?.map((data, i) => (
-                    <PrefernceChip showClose compare={list} onPress={(e) => updateList(e)} key={i} value={data.value} text={data.label} />
+                {
+                  list?.map((data, i) => (
+                    <PrefernceChip compare={list} key={i} value={data.value} text={data.label} />
                   ))
-                } */}
+                }
               </View>
             </View>
             <View className='pb-32 gap-3'>
@@ -193,7 +213,7 @@ const Profile = () => {
         <View className='gap-2 p-3' style={{ paddingBottom: 22 }}>
           <Text>Content</Text>
           <View className='border' style={{ borderRadius: 9, paddingHorizontal: 8, borderColor: "#cbd5e1" }}>
-            <BottomSheetTextInput onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />
+            <TextInput onChangeText={(e) => setPostText(e)} numberOfLines={11} multiline placeholder='Enter Post body' style={{ height: 200, textAlignVertical: 'top' }} />
           </View>
           <Button text="Done" />
         </View>

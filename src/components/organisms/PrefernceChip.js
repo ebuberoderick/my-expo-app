@@ -45,7 +45,7 @@ const PrefernceChip = ({ onPress, text, compare, showClose, value, inversed }) =
         <View className="relative">
             {(isExist || inversed) && <AntDesign name="checkcircle" className="absolute -top-1 -right-2" color="#2877F2" size={20} />}
             {!isExist && showClose && <AntDesign name="closecircle" className="absolute -top-1 -right-2" color="#ef4444" size={20} />}
-            <TouchableOpacity onPress={() => onPress(value)} className="py-2 px-6 border rounded-md" style={{ backgroundColor: pickedColor + "43", borderColor: pickedColor + "50" }}>
+            <TouchableOpacity onPress={() => onPress && onPress(value)} className="py-2 px-6 border rounded-md" style={{ backgroundColor: pickedColor + "43", borderColor: pickedColor + "50" }}>
                 <Text style={{ color: pickedColor }}>{text}</Text>
             </TouchableOpacity>
         </View>
