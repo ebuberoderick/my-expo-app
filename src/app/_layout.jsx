@@ -11,8 +11,7 @@ export default function Layout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(screen)" />
-        <Stack.Screen name="extars/post" />
-        <Stack.Screen name="extars/profile" />
+        <Stack.Screen name="extars" />
       </Stack>
     </>
   )

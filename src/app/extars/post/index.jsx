@@ -83,11 +83,6 @@ const Post = () => {
   };
 
 
-
-
-
-
-
   const getPrefrence = async () => {
     const { status, data } = await fetchPrefrence().catch(err => console.log(err))
     if (status) {
