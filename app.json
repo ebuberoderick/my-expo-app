@@ -42,6 +42,9 @@
     "owner": "totsapp",
     "android": {
       "package": "com.totsapp.totsapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.totsapp.totsapp"
     }
   }
 }

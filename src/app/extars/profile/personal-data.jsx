@@ -12,6 +12,7 @@ import UseFormHandler from '~/hooks/useFormHandler'
 import AppInput from '~/components/organisms/AppInput'
 import { useUserStore } from '~/Store/holders/UserStore'
 import ProfileSmallCard from '~/components/organisms/ProfileSmallCard'
+import { UpdateUserProfile } from '~/services/authService'
 
 const PersonalData = () => {
     const router = useRouter()
@@ -31,15 +32,30 @@ const PersonalData = () => {
             phone: 'Please Enter Phone'
         },
         initialValues: {
-            fname: '',
-            lname: '',
-            username: '',
-            gender: '',
-            phone: ''
+            fname: user?.user?.fname,
+            lname: user?.user?.lname,
+            username: user?.user?.username,
+            gender: user?.user?.gender,
+            phone: user?.user?.phone
         },
 
         onSubmit: async (value) => {
-            console.log(value);
+            const { data, status } = await UpdateUserProfile(value)
+
+            if (status) {
+                console.log(data);
+                // SignInAuth(data, dispatch);
+                // updateAppState({ location: "/(auth)/location" });
+                // router.replace("/(auth)/location");
+            } else {
+                let error = {};
+                for (const key in data.data) {
+                    // error = { [key]: `${data.data[key][0]}` };
+                    console.log(key);
+                }
+                console.log(error);
+                formHandler.setError(error);
+            }
         }
     })
 
@@ -67,11 +83,11 @@ const PersonalData = () => {
                         <View className='flex-grow px-3'>
                             <ProfileSmallCard />
                             <View className='relative gap-5' style={{ top: 100 }}>
-                                <AppInput error={formHandler.error?.fname} onChange={e => formHandler.value.fname = e} icon={<EvilIcons name="user" size={30} color={"#9ca3af"} />} placeholder={"First Name"} />
-                                <AppInput error={formHandler.error?.lname} onChange={e => formHandler.value.lname = e} icon={<EvilIcons name="user" size={30} color={"#9ca3af"} />} placeholder={"Last Name"} />
-                                <AppInput error={formHandler.error?.username} onChange={e => formHandler.value.username = e} icon={<Ionicons name="at" size={25} color={"#9ca3af"} />} placeholder={"Username"} />
+                                <AppInput defaultValue={user?.user?.fname} error={formHandler.error?.fname} onChange={e => formHandler.value.fname = e} icon={<EvilIcons name="user" size={30} color={"#9ca3af"} />} placeholder={"First Name"} />
+                                <AppInput defaultValue={user?.user?.lname} error={formHandler.error?.lname} onChange={e => formHandler.value.lname = e} icon={<EvilIcons name="user" size={30} color={"#9ca3af"} />} placeholder={"Last Name"} />
+                                <AppInput defaultValue={user?.user?.username} error={formHandler.error?.username} onChange={e => formHandler.value.username = e} icon={<Ionicons name="at" size={25} color={"#9ca3af"} />} placeholder={"Username"} />
                                 <AppSelect error={formHandler.error?.gender} onChange={e => { formHandler.value.gender = e.value }} options={gender} placeholder={"Gender"} icon={<Ionicons name="transgender-outline" size={25} color={"#9ca3af"} />} />
-                                <AppInput error={formHandler.error?.phone} onChange={e => formHandler.value.phone = e} icon={<Feather name="phone" size={20} color={"#9ca3af"} />} placeholder={"Phone"} />
+                                <AppInput defaultValue={user?.user?.phone} error={formHandler.error?.phone} onChange={e => formHandler.value.phone = e} icon={<Feather name="phone" size={20} color={"#9ca3af"} />} placeholder={"Phone"} />
                             </View>
                         </View>
                         <View className='px-3' style={{ paddingBottom: 30 }}>

@@ -4,8 +4,8 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import { TouchableOpacity } from 'react-native';
 
-const AppInput = ({ placeholder, icon, type, error, onChange }) => {
-    const [text, setText] = useState("");
+const AppInput = ({ placeholder, icon, type, error, onChange, defaultValue }) => {
+    const [text, setText] = useState(defaultValue);
     const [showText, setShowText] = useState(true)
 
     return (

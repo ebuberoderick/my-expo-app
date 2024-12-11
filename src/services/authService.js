@@ -8,6 +8,7 @@ export const AppVerifyOtp = (formData) => apiWithOutAuth.post("/recover/verify_o
 export const AppNewPassword = (formData) => apiWithOutAuth.post("/recover/create_new_password", formData).then(getApiResponse).catch(getErrorResponse);
 export const addLocation = (formData) => apiWithAuth.post("app/onboarding/add_user_location", formData).then(getApiResponse).catch(getErrorResponse);
 export const AppUpdatePassword = (formData) => apiWithAuth.post("app/profile/update_password", formData).then(getApiResponse).catch(getErrorResponse);
+export const UpdateUserProfile = (formData) => apiWithAuth.post("app/profile/update", formData).then(getApiResponse).catch(getErrorResponse);
 
 
 
