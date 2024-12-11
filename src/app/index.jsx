@@ -37,7 +37,7 @@ const Index = () => {
     <View className="bg-white flex-1">
       <SplashScreen />
     </View>
-  );
+  );  
 };
 
 export default Index;

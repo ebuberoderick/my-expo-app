@@ -7,7 +7,7 @@ export function SignInAuth(data, dispatch) {
 
 
 export async function SignOut(userStore, appDefault) {
-  userStore({})
+  userStore({}) 
   appDefault({ location: "", getStarted: false })
   AsyncStorage.removeItem("APPTOKEN")
 }

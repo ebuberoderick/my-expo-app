@@ -99,7 +99,7 @@ export default function Page() {
           contentContainerStyle={{ paddingBottom: Platform.OS === "android" ? 32 : 32 }}
         />
       </View>
-      <PostCommentBottomSheet post_id={comments} sheetRef={sheetRef} />
+      <PostCommentBottomSheet sheetRef={sheetRef} post_id={comments} />
     </AppLayout>
 
   );

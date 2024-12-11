@@ -28,12 +28,14 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
     const input = useRef(null)
 
-    const fetchComments = async (id) => {
-        const { data, status } = await fetchPostComment({ post_id: id })
-        if (status) {
-            setCommentList(data.data[0].data);
-        }
-        updateloading(false)
+    const fetchComments = (id) => {
+        fetchPostComment({ post_id: id }).then((res) => {
+            if (res.status) {
+                setCommentList(res.data.data[0].data);
+            }
+            updateloading(false)
+        })
+
     }
 
 
@@ -80,14 +82,6 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
     const react = async (i) => {
         await postCommentLike({ post_id, comment_id: i })
         fetchComments(postForm.value.post_id)
-
-
-        // setReacted(!reacted)
-        // if (reacted) {
-        //     setreactedVal("+")
-        // } else {
-        //     setreactedVal("-")
-        // }
     }
 
 
@@ -99,13 +93,13 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         updateloading(true)
         postForm.value.post_id = post_id
         fetchComments(post_id)
-    }, [post_id])
+    }, [])
 
 
     return (
         <AppBottomSheet withFooter movedown={movedown} FooterContent={() => (
             <View className='w-full absolute bottom-0'>
-                <BlurView  experimentalBlurMethod='dimezisBlurView' intensity={20} className='p-3 w-full flex-row gap-3 '>
+                <BlurView experimentalBlurMethod='dimezisBlurView' intensity={20} className='p-3 w-full flex-row gap-3 '>
                     <View className='border border-gray-300 flex-row flex-grow rounded-3xl'>
                         <View className='p-2'>
                             <View className='w-10 h-10 items-center justify-center bg-blue rounded-full'>
@@ -142,7 +136,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                     }
                     <BottomSheetScrollView className="px-4 w-screen">
                         {loading && <CommentPreloader />}
-                        {!loading && commentList.length < 1 && (
+                        {!loading && commentList?.length < 1 && (
                             <View className='gap-3' style={{ paddingTop: 100 }}>
                                 <View className='justify-center w-full items-center'><Fontisto name="comments" size={90} color={"#e3e3e3"} /></View>
                                 <View>
@@ -152,7 +146,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                             </View>
                         )}
                         {
-                            !loading && commentList.length > 0 && (
+                            !loading && commentList?.length > 0 && (
                                 <View className='gap-2 pb-24'>
                                     {
                                         commentList?.map((comment, i) => (
@@ -174,13 +168,13 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                                         <View>
                                                             <Feather name="refresh-cw" size={18} />
                                                         </View>
-                                                        <View><Text className='text-xs'>{comment.replies.length}</Text></View>
+                                                        <View><Text className='text-xs'>{comment?.replies.length}</Text></View>
                                                     </TouchableOpacity>
                                                     <TouchableOpacity onPress={() => react(comment?.id)} className='flex-row gap-1 items-center'>
                                                         <View>
                                                             {checkReacted(comment.likes) === true ? <Fontisto name="heart" size={14} color={"#2877F2"} /> : <Fontisto name="heart-alt" size={14} />}
                                                         </View>
-                                                        <View><Text className='text-xs'>{comment.likes.length}</Text></View>
+                                                        <View><Text className='text-xs'>{comment?.likes.length}</Text></View>
                                                     </TouchableOpacity>
                                                     {
                                                         comment.replies.length > 0 && (
