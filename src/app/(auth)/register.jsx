@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Pressable, KeyboardAvoidingView, Platform, ScrollView, Touchable } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, KeyboardAvoidingView, Platform, ScrollView, Touchable, TouchableWithoutFeedback } from 'react-native';
 import React, { useState } from 'react';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
@@ -12,7 +12,6 @@ import { SignInAuth } from '../../hooks/Auth';
 import { CheckBox } from 'react-native-btr';
 import { useAppDefaulstore } from '~/Store/holders/AppDefault';
 import { useUserStore } from '~/Store/holders/UserStore';
-import { TouchableWithoutFeedback } from 'react-native';
 
 const Register = () => {
     const dispatch = useUserStore((state) => state.updateUserState);

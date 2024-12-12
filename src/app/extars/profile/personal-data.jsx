@@ -16,6 +16,7 @@ import { UpdateUserProfile } from '~/services/authService'
 
 const PersonalData = () => {
     const router = useRouter()
+    const updateUserState = useUserStore((state) => state.updateUserState);
     const user = useUserStore((state) => state.storage);
 
     const gender = [
@@ -44,17 +45,28 @@ const PersonalData = () => {
 
             if (status) {
                 console.log(data);
-                // SignInAuth(data, dispatch);
-                // updateAppState({ location: "/(auth)/location" });
-                // router.replace("/(auth)/location");
+                const daa = {}
+                daa.bearer_token = user?.bearer_token
+                daa.user = data.data[0]
+                updateUserState(daa)
+                router.back()
             } else {
-                let error = {};
+                // let error = {};
+                // for (const key in data.data) {
+                //     // error = { [key]: `${data.data[key][0]}` };
+                //     error = {
+                //         [key]: `${data.data[key][0]}`
+                //     }
+                // }
+                const error = []
                 for (const key in data.data) {
                     // error = { [key]: `${data.data[key][0]}` };
-                    console.log(key);
+                    error.push({ [key]: `${data.data[key][0]}` })
                 }
-                console.log(error);
-                formHandler.setError(error);
+                console.log(data);
+                formHandler.setError({...error});
+                console.log(formHandler.error);
+
             }
         }
     })

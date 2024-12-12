@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import AppBottomSheet from '../organisms/AppBottomSheet'
 import Octicons from "react-native-vector-icons/Octicons"
 import Fontisto from "react-native-vector-icons/Fontisto"
@@ -14,6 +14,7 @@ import { fetchPostComment, postComment, postCommentLike, postCommentReply } from
 import { moment } from '~/hooks/useMoment'
 import CommentPreloader from '../perloader/CommentPreloader'
 import { useUserStore } from '~/Store/holders/UserStore'
+import { useFocusEffect } from 'expo-router'
 
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
@@ -35,7 +36,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
             }
             updateloading(false)
         })
-
+        console.log(id);
     }
 
 
@@ -79,6 +80,14 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         }
     })
 
+
+
+    const userProfileCheck = async (data) => {
+        console.log(data);
+
+    }
+
+
     const react = async (i) => {
         await postCommentLike({ post_id, comment_id: i })
         fetchComments(postForm.value.post_id)
@@ -89,12 +98,16 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
         postForm.value.comment_id = replies?.id
     }, [replies])
 
-    useEffect(() => {
-        updateloading(true)
-        postForm.value.post_id = post_id
-        fetchComments(post_id)
-    }, [])
 
+    useFocusEffect(
+        useCallback(
+            () => {
+                updateloading(true)
+                postForm.value.post_id = post_id
+                fetchComments(post_id)
+            }, [post_id],
+        )
+    )
 
     return (
         <AppBottomSheet withFooter movedown={movedown} FooterContent={() => (
@@ -151,17 +164,19 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                     {
                                         commentList?.map((comment, i) => (
                                             <View key={i} className='gap-2'>
-                                                <View className='flex-row items-center gap-2'>
-                                                    <View>
-                                                        <View className='w-10 h-10 bg-blue rounded-full'>
-                                                            <Image source={{ uri: comment?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                <TouchableWithoutFeedback onPress={() => userProfileCheck(comment)}>
+                                                    <View className='flex-row items-center gap-2'>
+                                                        <View>
+                                                            <View className='w-10 h-10 bg-blue rounded-full'>
+                                                                <Image source={{ uri: comment?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                            </View>
+                                                        </View>
+                                                        <View>
+                                                            <Text className='font-bold text-sm'>{comment?.user?.fname} {comment?.user?.lname}</Text>
+                                                            <Text className='text-gray-500 text-xs'>@{comment?.user?.username} {moment(comment?.created_at)} ago</Text>
                                                         </View>
                                                     </View>
-                                                    <View>
-                                                        <Text className='font-bold text-sm'>{comment?.user?.fname} {comment?.user?.lname}</Text>
-                                                        <Text className='text-gray-500 text-xs'>@{comment?.user?.username} {moment(comment?.created_at)} ago</Text>
-                                                    </View>
-                                                </View>
+                                                </TouchableWithoutFeedback>
                                                 <Text className='text-sm'>{comment?.text}</Text>
                                                 <View className='flex-row items-center gap-3'>
                                                     <TouchableOpacity onPress={() => { setReplies(comment); input.current.focus() }} className='flex-row gap-1 items-center'>
@@ -189,17 +204,19 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                                     {
                                                         comment.replies?.splice(0, showLenght).map((rp, i) => (
                                                             <View key={i} className='gap-1'>
-                                                                <View className='flex-row items-center gap-2'>
-                                                                    <View>
-                                                                        <View className='w-7 h-7 bg-blue rounded-full'>
-                                                                            <Image source={{ uri: rp?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                                <TouchableWithoutFeedback onPress={() => userProfileCheck(rp)}>
+                                                                    <View className='flex-row items-center gap-2'>
+                                                                        <View>
+                                                                            <View className='w-7 h-7 bg-blue rounded-full'>
+                                                                                <Image source={{ uri: rp?.user?.avatar }} className="w-full h-full rounded-full" />
+                                                                            </View>
+                                                                        </View>
+                                                                        <View>
+                                                                            <Text className='font-bold text-xs'>{rp?.user?.fname} {rp?.user?.lname}</Text>
+                                                                            <Text className='text-gray-500 text-xs'>@{rp?.user?.username} {moment(rp?.created_at)} ago</Text>
                                                                         </View>
                                                                     </View>
-                                                                    <View>
-                                                                        <Text className='font-bold text-xs'>{rp?.user?.fname} {rp?.user?.lname}</Text>
-                                                                        <Text className='text-gray-500 text-xs'>@{rp?.user?.username} {moment(rp?.created_at)} ago</Text>
-                                                                    </View>
-                                                                </View>
+                                                                </TouchableWithoutFeedback>
                                                                 <Text className='text-xs'>{rp?.text}</Text>
                                                                 <TouchableOpacity className='flex-row gap-1 items-center'>
                                                                     <View>

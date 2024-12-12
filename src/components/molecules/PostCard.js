@@ -8,10 +8,16 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { postLike } from '~/services/authService';
 import { moment } from '~/hooks/useMoment';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useUserStore } from '~/Store/holders/UserStore';
+import { router, useRouter } from 'expo-router';
 
 
 const PostCard = ({ data, openBottomSheet }) => {
   // const locale = DeviceInfo.getDeviceLocale()
+  const user = useUserStore((state) => state.storage);
+
+  const router = useRouter()
 
   const [post, setPost] = useState(data)
   const [reactedVal, setreactedVal] = useState("")
@@ -37,26 +43,31 @@ const PostCard = ({ data, openBottomSheet }) => {
   }, [readvShow])
 
 
+
+
+
   return (
-    <View className="gap-4" style={{paddingTop:2}}>
-      <View className="flex-row gap-2 items-center">
-        <Animated.View>
-          <Animated.View className="w-11 h-11 overflow-hidden rounded-full">
-            <Image source={{ uri: post?.user?.avatar }} className='w-full h-full' />
-          </Animated.View>
-        </Animated.View>
-        <View className="">
-          <Animated.View className="">
-            <Text className='text-sm font-bold'>{post?.user?.fname} {post?.user?.lname}</Text>
-          </Animated.View>
-          <View className="flex-row gap-2">
-            <Animated.View className="">
-              <Text className='text-xs'>@{post?.user?.username}</Text>
+    <View className="gap-4" style={{ paddingTop: 2 }}>
+      <TouchableWithoutFeedback onPress={() => user?.user?.id === post?.user?.id ? router.push("/profile") : router.push(`/extars/profile/users-profile?id=${post.user.id}`)}>
+        <View className="flex-row gap-2 items-center">
+          <Animated.View>
+            <Animated.View className="w-11 h-11 overflow-hidden rounded-full">
+              <Image source={{ uri: post?.user?.avatar }} className='w-full h-full' />
             </Animated.View>
-            <Animated.View className=""><Text className='text-xs'>{moment(post?.created_at)} ago</Text></Animated.View>
+          </Animated.View>
+          <View className="">
+            <Animated.View className="">
+              <Text className='text-sm font-bold'>{post?.user?.fname} {post?.user?.lname}</Text>
+            </Animated.View>
+            <View className="flex-row gap-2">
+              <Animated.View className="">
+                <Text className='text-xs'>@{post?.user?.username}</Text>
+              </Animated.View>
+              <Animated.View className=""><Text className='text-xs'>{moment(post?.created_at)} ago</Text></Animated.View>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
       {
         data?.image && (
           <View>
@@ -64,7 +75,7 @@ const PostCard = ({ data, openBottomSheet }) => {
               <Carousel loop showsControls={false} dotStyle={{ borderWidth: 1, borderColor: "#fff", width: 8, height: 8, gap: 4, borderRadius: 99, marginHorizontal: 3 }} activeDotStyle={{ backgroundColor: "#fff", width: 8, height: 8, borderRadius: 99, marginHorizontal: 3 }} >
                 {
                   data?.image?.map((e, i) => (
-                    <View key={i} className='w-full flex-1' style={{backgroundColor:"#2877F210"}}>
+                    <View key={i} className='w-full flex-1' style={{ backgroundColor: "#2877F210" }}>
                       <Image source={{ uri: e }} className='w-full h-full' />
                     </View>
                   ))
