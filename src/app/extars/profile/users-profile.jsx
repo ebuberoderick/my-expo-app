@@ -51,8 +51,6 @@ const Profile = () => {
         setLoading(false)
     }
 
-
-    
   useFocusEffect(
     useCallback(() => {
       getPrefrence() 
