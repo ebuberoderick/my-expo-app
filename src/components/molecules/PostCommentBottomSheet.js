@@ -14,11 +14,12 @@ import { fetchPostComment, postComment, postCommentLike, postCommentReply } from
 import { moment } from '~/hooks/useMoment'
 import CommentPreloader from '../perloader/CommentPreloader'
 import { useUserStore } from '~/Store/holders/UserStore'
-import { useFocusEffect } from 'expo-router'
+import { useFocusEffect, useRouter } from 'expo-router'
 
 const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
 
     const user = useUserStore((state) => state.storage);
+    const router = useRouter()
     const [movedown, updateMovedown] = useState(false)
     const [loading, updateloading] = useState(true)
     const comRly = useRef(null)
@@ -164,7 +165,7 @@ const PostCommentBottomSheet = ({ sheetRef, post_id }) => {
                                     {
                                         commentList?.map((comment, i) => (
                                             <View key={i} className='gap-2'>
-                                                <TouchableWithoutFeedback onPress={() => userProfileCheck(comment)}>
+                                                <TouchableWithoutFeedback onPress={() => { sheetRef.current.dismiss(); user?.user?.id === comment?.user?.id ? router.push("/profile") : router.push(`/extars/profile/users-profile?id=${comment.user.id}`) }}>
                                                     <View className='flex-row items-center gap-2'>
                                                         <View>
                                                             <View className='w-10 h-10 bg-blue rounded-full'>

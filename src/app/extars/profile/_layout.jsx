@@ -8,10 +8,7 @@ import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 const _layout = () => {
   enableScreens(false);
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <GestureHandlerRootView>
           <BottomSheetModalProvider>
